@@ -22,9 +22,11 @@ public class ConsoleHandler {
 
     static {
         commandInfo.put("create", "create [path] [file-name]\nCreate file by specified path.\n");
-        commandInfo.put("read", "read [path] [file-name]\nRead a file by specified path to the terminal.\n");
+        commandInfo.put("read",
+                "read [path] [file-name]\nRead a file by specified path to the terminal.\n");
         commandInfo.put("info", "info [path] [file-name]\nGet short info about specified file.\n");
-        commandInfo.put("help", "help [command]\nGet info about all available commands or about a specified one.\n");
+        commandInfo.put("help", "help [command]\n"
+                + "Get info about all available commands or about a specified one.\n");
         commandInfo.put("exit", "exit\nSay bye-bye :-)\n");
     }
 
@@ -52,6 +54,7 @@ public class ConsoleHandler {
                     break;
                 case "exit":
                     System.exit(0);
+                    break;
                 default:
                     saveText(input);
             }
@@ -60,11 +63,11 @@ public class ConsoleHandler {
 
     private void info(String path, String fileName) throws IOException {
         Path file = Path.of(path + File.separator + fileName);
-        BasicFileAttributes attributes = Files.readAttributes(file, BasicFileAttributes.class);
         System.out.println(Files.readAllBytes(file).length + " symbols");
         System.out.println(Files.readAllLines(file).size() + " lines");
         System.out.println(countWords(Files.readAllLines(file)) + " words");
         Calendar calendar = Calendar.getInstance();
+        BasicFileAttributes attributes = Files.readAttributes(file, BasicFileAttributes.class);
         calendar.setTimeInMillis(attributes.lastModifiedTime().toMillis());
 
         System.out.println(calendar.getTime() + " last modified");
