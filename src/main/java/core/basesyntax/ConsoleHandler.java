@@ -31,21 +31,21 @@ public class ConsoleHandler {
         while (true) {
             String input = scanner.nextLine();
             String[] args = input.split(" ");
-            String pathOrCommandName = null;
+            String pathName = null;
             String fileName = null;
             if (args.length >= 2) {
-                pathOrCommandName = args[1];
+                pathName = args[1];
                 fileName = args[2];
             }
             switch (args[0]) {
                 case "create":
-                    create(pathOrCommandName, fileName);
+                    createFile(pathName, fileName);
                     break;
                 case "read":
-                    read(pathOrCommandName, fileName);
+                    read(pathName, fileName);
                     break;
                 case "info":
-                    getInfo(pathOrCommandName, fileName);
+                    getInfo(pathName, fileName);
                     break;
                 case "help":
                     help(args);
@@ -98,9 +98,10 @@ public class ConsoleHandler {
         }
         System.out.println("Save text? Y/N");
         if (askYesNo()) {
-            String[] filePath = askUserFilePath();
-            create(filePath[0], filePath[1]);
-            writeToFile(filePath[0], filePath[1], input);
+            String filePath = askUserFilePath();
+            String fileName = askUserFileName();
+            createFile(filePath, fileName);
+            writeToFile(filePath, fileName, input);
         }
     }
 
@@ -126,11 +127,16 @@ public class ConsoleHandler {
         }
     }
 
-    private String[] askUserFilePath() {
-        System.out.println("Please, write path and name for the new text file:");
+    private String askUserFilePath() {
+        System.out.println("Please, write path for the new text file:");
         Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
-        return input.split(" ");
+        return scanner.nextLine();
+    }
+
+    private String askUserFileName() {
+        System.out.println("Please, write name for the new text file:");
+        Scanner scanner = new Scanner(System.in);
+        return scanner.nextLine();
     }
 
     private void read(String path, String fileName) {
@@ -141,17 +147,16 @@ public class ConsoleHandler {
         }
         try (BufferedReader reader = new BufferedReader(
                 new FileReader(path + File.separator + fileName))) {
-            String line = reader.readLine();
-            while (line != null) {
+            String line;
+            while ((line = reader.readLine()) != null) {
                 System.out.println(line);
-                line = reader.readLine();
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void create(String pathName, String fileName) {
+    private void createFile(String pathName, String fileName) {
         try {
             File directory = new File(pathName);
             if (!directory.exists()) {
