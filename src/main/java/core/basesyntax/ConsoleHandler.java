@@ -9,8 +9,8 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.Calendar;
-import java.util.LinkedHashMap;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -18,39 +18,37 @@ import java.util.stream.Stream;
 
 public class ConsoleHandler {
 
-    private static final Map<String, String> commandInfo = new LinkedHashMap<>();
-
-    static {
-        commandInfo.put("create", "create [path] [file-name]\nCreate file by specified path.\n");
-        commandInfo.put("read",
-                "read [path] [file-name]\nRead a file by specified path to the terminal.\n");
-        commandInfo.put("info", "info [path] [file-name]\nGet short info about specified file.\n");
-        commandInfo.put("help", "help [command]\n"
-                + "Get info about all available commands or about a specified one.\n");
-        commandInfo.put("exit", "exit\nSay bye-bye :-)\n");
-    }
+    private static final Map<String, String> commandInfo = Map.of("create",
+            "create [path] [file-name]\nCreate file by specified path.\n", "read",
+            "read [path] [file-name]\nRead a file by specified path to the terminal.\n",
+            "info", "info [path] [file-name]\nGet short info about specified file.\n",
+            "help", "help [command]\n"
+                    + "Get info about all available commands or about a specified one.\n",
+            "exit", "exit\nSay bye-bye :-)\n");
 
     public void handleInput() throws IOException {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             String input = scanner.nextLine();
-            String[] split = input.split(" ");
-            switch (split[0]) {
+            String[] args = input.split(" ");
+            String pathOrCommandName = null;
+            String fileName = null;
+            if (args.length >= 2) {
+                pathOrCommandName = args[1];
+                fileName = args[2];
+            }
+            switch (args[0]) {
                 case "create":
-                    create(split[1], split[2]);
+                    create(pathOrCommandName, fileName);
                     break;
                 case "read":
-                    read(split[1], split[2]);
+                    read(pathOrCommandName, fileName);
                     break;
                 case "info":
-                    info(split[1], split[2]);
+                    getInfo(pathOrCommandName, fileName);
                     break;
                 case "help":
-                    if (split.length >= 2) {
-                        help(split[1]);
-                    } else {
-                        help();
-                    }
+                    help(args);
                     break;
                 case "exit":
                     System.exit(0);
@@ -61,21 +59,20 @@ public class ConsoleHandler {
         }
     }
 
-    private void info(String path, String fileName) throws IOException {
+    private void getInfo(String path, String fileName) throws IOException {
         Path file = Path.of(path + File.separator + fileName);
         System.out.println(Files.readAllBytes(file).length + " symbols");
         System.out.println(Files.readAllLines(file).size() + " lines");
         System.out.println(countWords(Files.readAllLines(file)) + " words");
-        Calendar calendar = Calendar.getInstance();
         BasicFileAttributes attributes = Files.readAttributes(file, BasicFileAttributes.class);
-        calendar.setTimeInMillis(attributes.lastModifiedTime().toMillis());
-
-        System.out.println(calendar.getTime() + " last modified");
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        String dateLastModified = df.format(attributes.lastModifiedTime().toMillis());
+        System.out.println(dateLastModified + " last modified");
         System.out.println("Size: " + attributes.size() + " bytes");
     }
 
     private long countWords(List<String> lines) {
-        //this is a hw for lesson 5, so students are not obliged to use Stream API
+        // this is a hw for lesson 5, so students are not obliged to use Stream API
         return lines.stream()
                 .map(line -> Stream.of(line.split(" ")))
                 .flatMap(o -> o)
@@ -83,14 +80,16 @@ public class ConsoleHandler {
                 .count();
     }
 
-    private void help() {
+    private void help(String[] args) {
+        if (args.length >= 2) {
+            System.out.println(commandInfo.get(args[1]));
+            return;
+        }
         for (String info : commandInfo.values()) {
             System.out.println(info);
-        }
-    }
 
-    private void help(String commandName) {
-        System.out.println(commandInfo.get(commandName));
+        }
+
     }
 
     private void saveText(String input) throws IOException {
@@ -99,35 +98,35 @@ public class ConsoleHandler {
         }
         System.out.println("Save text? Y/N");
         if (askYesNo()) {
-            String[] saveFilePath = getSaveFilePath();
-            create(saveFilePath[0], saveFilePath[1]);
-            writeToFile(saveFilePath[0], saveFilePath[1], input);
+            String[] filePath = askUserFilePath();
+            create(filePath[0], filePath[1]);
+            writeToFile(filePath[0], filePath[1], input);
         }
     }
 
     private boolean askYesNo() {
         Scanner scanner = new Scanner(System.in);
-        String answer = scanner.next();
-        switch (answer) {
-            case "Y":
-                return true;
-            case "N":
-                return false;
-            default:
-                System.out.println("Unknown answer. Please, write Y or N");
-                askYesNo();
+        while (true) {
+            String answer = scanner.next();
+            switch (answer) {
+                case "Y":
+                    return true;
+                case "N":
+                    return false;
+                default:
+                    System.out.println("Unknown answer. Please, write Y or N");
+            }
         }
-        return false;
     }
 
-    private void writeToFile(String path, String fileName, String input)
+    private void writeToFile(String path, String fileName, String content)
             throws FileNotFoundException {
         try (PrintWriter writer = new PrintWriter(path + File.separator + fileName)) {
-            writer.write(input);
+            writer.write(content);
         }
     }
 
-    private String[] getSaveFilePath() {
+    private String[] askUserFilePath() {
         System.out.println("Please, write path and name for the new text file:");
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
@@ -135,6 +134,11 @@ public class ConsoleHandler {
     }
 
     private void read(String path, String fileName) {
+        File file = new File(path + File.separator + fileName);
+        if (!file.exists()) {
+            System.out.println("Warning: no such file or directory");
+            return;
+        }
         try (BufferedReader reader = new BufferedReader(
                 new FileReader(path + File.separator + fileName))) {
             String line = reader.readLine();
@@ -143,12 +147,17 @@ public class ConsoleHandler {
                 line = reader.readLine();
             }
         } catch (IOException e) {
-            System.out.println("Warning: no such file or directory");
+            throw new RuntimeException(e);
         }
     }
 
     private void create(String pathName, String fileName) {
         try {
+            File directory = new File(pathName);
+            if (!directory.exists()) {
+                System.out.println("Warning: no such directory");
+                return;
+            }
             File file = new File(pathName + File.separator + fileName);
             if (file.exists()) {
                 System.out.println("File " + fileName + " at " + pathName + " already exists.\n"
@@ -159,7 +168,7 @@ public class ConsoleHandler {
             }
             file.createNewFile();
         } catch (IOException e) {
-            System.out.println("Warning: no such file or directory");
+            throw new RuntimeException(e);
         }
     }
 }
