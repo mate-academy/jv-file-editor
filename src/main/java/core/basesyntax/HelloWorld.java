@@ -15,9 +15,20 @@ public class HelloWorld {
     public static final Scanner CONSOLE_READER = new Scanner(System.in);
 
     public static void main(String[] args) {
-//        info("src", "fileTest.txt");
-//        read("src", "fileTest.txt");
-        help();
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("\nWrite a command: ");
+        String textFromConsole = scanner.next();
+        String qwe = textFromConsole.substring(0,textFromConsole.indexOf("_"));
+        while (!textFromConsole.equals("exit")) {
+            if (textFromConsole.equals("help")) {
+                help();
+            }
+//            switch (textFromConsole.substring(0,textFromConsole.indexOf(" "))) {
+//
+//            }
+            System.out.print("\nWrite a command: ");
+            textFromConsole = scanner.next();
+        }
     }
 
     public static void create(String path, String name) {
@@ -55,6 +66,14 @@ public class HelloWorld {
         try {
             String dates = Files.readString(currentFile.toPath());
             System.out.println(dates);
+        } catch (IOException e) {
+            System.out.println("File does not exist or close for reading");
+        }
+    }
+
+    public static void write(String path, String name, String text) {
+        try (FileWriter fileWriter = new FileWriter(path + File.separator + name)){
+            fileWriter.write(text);
         } catch (IOException e) {
             System.out.println("File does not exist or close for reading");
         }
@@ -101,6 +120,34 @@ public class HelloWorld {
     }
 
     public static void help(String command) {
-
+        switch (command) {
+            case "create":
+                System.out.println("\ncreate [path] [file-name]\n" +
+                        "Creates a text file at the specified path. If the path does not exist,\n" +
+                        "display the appropriate message. If the" +
+                        " file already exists, request to overwrite it.\n");
+                break;
+            case "read":
+                System.out.println("\nread [path] [file-name]\n" +
+                        "Reads the file at the specified path and displays the text in" +
+                        " the console.\nIf the specified path and / or file does not exist," +
+                        " display the corresponding message.\n");
+                break;
+            case "info":
+                System.out.println("\ninfo [path] [file-name]\n" +
+                        "Displays brief information on the specified file:\n" +
+                        "number of characters, lines, words, date and time of the last change," +
+                        " file size.\n");
+                break;
+            case "help":
+                System.out.println("\nhelp\nDisplays all available commands and information" +
+                        " to them in the console.\n");
+                break;
+            default:
+                System.out.println("\nBy writing to the console any text that is not a command\n" +
+                        "and pressing enter, you will be able to write it to file.");
+        }
     }
+
+
 }
