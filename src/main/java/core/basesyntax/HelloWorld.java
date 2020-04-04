@@ -6,6 +6,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Feel free to remove this class and create your own.
@@ -17,48 +19,70 @@ public class HelloWorld {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("\nWrite a command: ");
-        String textFromConsole = scanner.nextLine();
+        String textFromConsole = CONSOLE_READER.nextLine();
         while (!textFromConsole.equals("exit")) {
             if (textFromConsole.equals("help")) {
                 help();
-            }
-            if (textFromConsole.indexOf(" ") != -1
-                    && textFromConsole.indexOf("[") != -1
-                    && textFromConsole.indexOf("]") != -1) {
-                int[] commandindex = {textFromConsole.indexOf("["),
-                        textFromConsole.indexOf("]")};
-                if (textFromConsole.substring(0, textFromConsole.indexOf(" ")).equals("help")) {
-                    help(textFromConsole.substring(commandindex[0], commandindex[1]));
+            } else {
+                if (myPattern("^help+\\s(\\[+)\\w+\\]$",
+                        textFromConsole).find()) {
+                    String command = textFromConsole
+                            .replaceAll("\\w+\\s\\[", "")
+                            .replace("]", "");
+                    help(command);
+                } else if (myPattern("^\\w+\\s(\\[+)\\w+\\]\\s(\\[)\\w+\\.+\\w+\\]$",
+                        textFromConsole).find()) {
+                    String[] commandDates = textFromConsole
+                            .replaceAll("[^a-z\\s.]", "")
+                            .split("\\s");
+                    switch (commandDates[0]) {
+                        case "read":
+                            read(commandDates[1], commandDates[2]);
+                            break;
+                        case "create":
+                            create(commandDates[1], commandDates[2]);
+                            break;
+                        case "info":
+                            info(commandDates[1], commandDates[2]);
+                            break;
+                    }
+                } else {
+                    System.out.println("You want write this text in to the file(+/-)?");
+                    String choise = CONSOLE_READER.next();
+                    while (!(choise.equals("+") || choise.equals("-"))) {
+                        System.out.println("Please choose (+/-).");
+                        choise = CONSOLE_READER.next();
+                    }
+                    if (choise.equals("+")) {
+                        System.out.println("Write Path an File name." +
+                                "\nExample: [Path] [FileName.FileType]");
+                        String fullPath = scanner.nextLine();
+                        if (myPattern("(\\[+)\\w+\\]\\s(\\[)\\w+\\.+\\w+\\]$", fullPath).find()) {
+                            String[] pathMass = fullPath
+                                    .replaceAll("[^a-z\\s.]", "")
+                                    .split("\\s");
+                            write(pathMass[0], pathMass[1], textFromConsole);
+                            System.out.println("Information has been recorded.");
+                        } else {
+                            System.out.println("Oops you was make a mistake. " +
+                                    "All your text deleted. Next time, be careful)");
+                        }
+                    } else {
+                        System.out.println("Up you to chose.");
+                    }
+                    //////////write method////////////////////////////////
                 }
-            }
-            if (textFromConsole.indexOf(" ") != -1
-                    && textFromConsole.indexOf("[") != -1
-                    && textFromConsole.indexOf("]") != -1
-                    && textFromConsole.lastIndexOf("[") != -1
-                    && textFromConsole.lastIndexOf("]") != -1) {
-                int[] indexMass = {textFromConsole.indexOf("["),
-                        textFromConsole.indexOf("]"),
-                        textFromConsole.lastIndexOf("["),
-                        textFromConsole.lastIndexOf("]")};
-                String path = textFromConsole.substring(indexMass[0] + 1, indexMass[1]);
-                String file = textFromConsole.substring(indexMass[2] + 1, indexMass[3]);
-                switch (textFromConsole.substring(0, textFromConsole.indexOf(" "))) {
-                    case "create":
-                        create(path, file);
-                        break;
-                    case "read":
-                        read(path, file);
-                        break;
-                    case "info":
-                        info(path, file);
-                        break;
-                    default:
-                        break;
-                }
+
             }
             System.out.print("\nWrite a command: ");
-            textFromConsole = scanner.next();
+            textFromConsole = scanner.nextLine();
         }
+    }
+
+    public static Matcher myPattern(String regex, String text) {
+        Pattern pt = Pattern.compile(regex);
+        Matcher mt = pt.matcher(text);
+        return mt;
     }
 
     public static void create(String path, String name) {
@@ -174,6 +198,8 @@ public class HelloWorld {
                 System.out.println("\nhelp\nDisplays all available commands and information" +
                         " to them in the console.\n");
                 break;
+            case "exit":
+                System.out.println("Closing program.");
             default:
                 System.out.println("\nBy writing to the console any text that is not a command\n" +
                         "and pressing enter, you will be able to write it to file.");
