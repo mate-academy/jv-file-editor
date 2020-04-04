@@ -17,15 +17,45 @@ public class HelloWorld {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("\nWrite a command: ");
-        String textFromConsole = scanner.next();
-        String qwe = textFromConsole.substring(0,textFromConsole.indexOf("_"));
+        String textFromConsole = scanner.nextLine();
         while (!textFromConsole.equals("exit")) {
             if (textFromConsole.equals("help")) {
                 help();
             }
-//            switch (textFromConsole.substring(0,textFromConsole.indexOf(" "))) {
-//
-//            }
+            if (textFromConsole.indexOf(" ") != -1
+                    && textFromConsole.indexOf("[") != -1
+                    && textFromConsole.indexOf("]") != -1) {
+                int[] commandindex = {textFromConsole.indexOf("["),
+                        textFromConsole.indexOf("]")};
+                if (textFromConsole.substring(0, textFromConsole.indexOf(" ")).equals("help")) {
+                    help(textFromConsole.substring(commandindex[0], commandindex[1]));
+                }
+            }
+            if (textFromConsole.indexOf(" ") != -1
+                    && textFromConsole.indexOf("[") != -1
+                    && textFromConsole.indexOf("]") != -1
+                    && textFromConsole.lastIndexOf("[") != -1
+                    && textFromConsole.lastIndexOf("]") != -1) {
+                int[] indexMass = {textFromConsole.indexOf("["),
+                        textFromConsole.indexOf("]"),
+                        textFromConsole.lastIndexOf("["),
+                        textFromConsole.lastIndexOf("]")};
+                String path = textFromConsole.substring(indexMass[0] + 1, indexMass[1]);
+                String file = textFromConsole.substring(indexMass[2] + 1, indexMass[3]);
+                switch (textFromConsole.substring(0, textFromConsole.indexOf(" "))) {
+                    case "create":
+                        create(path, file);
+                        break;
+                    case "read":
+                        read(path, file);
+                        break;
+                    case "info":
+                        info(path, file);
+                        break;
+                    default:
+                        break;
+                }
+            }
             System.out.print("\nWrite a command: ");
             textFromConsole = scanner.next();
         }
@@ -36,7 +66,8 @@ public class HelloWorld {
         try {
             Files.createFile(filePath);
         } catch (FileAlreadyExistsException x) {
-            System.out.println("file named " + name + " already exists\n" + "You want delete this file(+/-)?");
+            System.out.println("file named " + name + " already exists\n"
+                    + "You want delete this file(+/-)?");
             String answer = "";
             do {
                 answer = CONSOLE_READER.next();
@@ -72,7 +103,7 @@ public class HelloWorld {
     }
 
     public static void write(String path, String name, String text) {
-        try (FileWriter fileWriter = new FileWriter(path + File.separator + name)){
+        try (FileWriter fileWriter = new FileWriter(path + File.separator + name)) {
             fileWriter.write(text);
         } catch (IOException e) {
             System.out.println("File does not exist or close for reading");
