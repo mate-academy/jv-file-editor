@@ -185,10 +185,17 @@ public class HelloWorld {
             try {
                 if (Files.exists(Paths.get(path + name))) {
                     System.out.println("File Already Exists.");
+                    System.out.println("Do you want to rewrite it? y/n");
+                    String yesOrNo = readFromConsole();
+                    if (yesOrNo.equals("y")) {
+                        Files.writeString(Paths.get(path + name),"");
+                    }
+                } else {
+                    Path testFile1 = Files.createFile(Paths.get(path + name));
+                    System.out.print("file crated ? - ");
+                    System.out.println(Files.exists(Paths.get(path + name)));
                 }
-                Path testFile1 = Files.createFile(Paths.get(path + name));
-                System.out.print("file crated ? - ");
-                System.out.println(Files.exists(Paths.get(path + name)));
+
             } catch (IOException e) {
                 System.out.println(e.toString());
             }
