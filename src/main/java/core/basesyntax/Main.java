@@ -1,5 +1,11 @@
 package core.basesyntax;
 
+import core.basesyntax.commands.Create;
+import core.basesyntax.commands.Default;
+import core.basesyntax.commands.Exit;
+import core.basesyntax.commands.Help;
+import core.basesyntax.commands.Info;
+import core.basesyntax.commands.Read;
 import java.util.Scanner;
 
 public class Main {
@@ -14,46 +20,27 @@ public class Main {
                 String command = inputSplitData[0];
                 switch (command) {
                     case "create": {
-                        Logic.create.execute(inputSplitData);
+                        Create.INSTANCE.execute(inputSplitData);
                         break;
                     }
                     case "read": {
-                        Logic.read.execute(inputSplitData);
+                        Read.INSTANCE.execute(inputSplitData);
                         break;
                     }
                     case "info": {
-                        Logic.info.execute(inputSplitData);
+                        Info.INSTANCE.execute(inputSplitData);
                         break;
                     }
                     case "help": {
-                        Logic.help.execute(inputSplitData);
+                        Help.INSTANCE.execute(inputSplitData);
                         break;
                     }
                     case "exit": {
-                        Logic.exit.execute(inputSplitData);
+                        Exit.INSTANCE.execute(inputSplitData);
                         break;
                     }
                     default: {
-                        if (!command.equals("")) {
-                            System.out.println("Хотите записать текст? (yes/no)");
-                            String answerWannaWriteInput
-                                    = new Scanner(System.in).nextLine().toLowerCase();
-                            if (answerWannaWriteInput.equals("yes")) {
-                                System.out.println("Введите путь и имя файла [path] [filename]: ");
-                                String answerPathAndFilename =
-                                        new Scanner(System.in).nextLine().toLowerCase();
-                                String[] splitData = answerPathAndFilename.split(" ");
-                                if (splitData.length == 2) {
-                                    String newCommand =
-                                            "create " + splitData[0] + " "
-                                                    + splitData[1] + " " + inputLine;
-                                    Logic.create.execute(newCommand.split(" "));
-                                } else {
-                                    System.out.println("Неверный аргумент(ы). "
-                                            + "Введите \"help\" для справки.");
-                                }
-                            }
-                        }
+                        Default.INSTANCE.execute(inputLine);
                     }
                 }
                 System.out.print("$ ");
