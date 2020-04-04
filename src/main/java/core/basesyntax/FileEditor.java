@@ -34,7 +34,7 @@ public class FileEditor {
         } while (!input.equals("exit"));
     }
 
-    public void decide(String input) throws IOException {
+    private void decide(String input) throws IOException {
         String[] tokens = input.split("\\s");
         if (assertLength(tokens, 3)) {
             switch (tokens[0]) {
