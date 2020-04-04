@@ -21,10 +21,6 @@ public class Read extends Command {
 
     @Override
     public void execute(String... args) {
-        //Считывает файл по указанному пути
-        // и выводит текст в консоль.
-        // Если указанного пути и/или файла не существует,
-        // вывести соответствующее сообщение
         if (args.length == 3) {
             String path = args[1];
             String filename = args[2];
@@ -34,10 +30,8 @@ public class Read extends Command {
                 if (!file.exists()) {
                     System.out.println("Файла с таким именем не существует.");
                 } else {
-                    try (BufferedReader br =
-                                 new BufferedReader(
-                                         new FileReader(
-                                                 path + File.separator + filename))) {
+                    try (BufferedReader br = new BufferedReader(
+                                         new FileReader(path + File.separator + filename))) {
                         while (br.ready()) {
                             System.out.println(br.readLine());
                         }
@@ -49,8 +43,7 @@ public class Read extends Command {
                 System.out.println("Путь не существует.");
             }
         } else {
-            System.out.println(
-                    "Неверный аргумент(ы). Введите \"help\" для справки.");
+            System.out.println("Неверный аргумент(ы). Введите \"help\" для справки.");
         }
     }
 }

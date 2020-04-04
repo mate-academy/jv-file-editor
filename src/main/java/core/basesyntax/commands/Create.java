@@ -21,9 +21,7 @@ public class Create extends Command {
 
     @Override
     public void execute(String... args) {
-        // Создает текстовый файл по указанному пути.
-        // Если путь не существует, вывести соответствующее сообщение.
-        // Если файл уже существует, вывести запрос на его перезапись
+
         if (args.length >= 3) {
             String path = args[1];
             String filename = args[2];
@@ -33,7 +31,6 @@ public class Create extends Command {
             if (Files.exists(Paths.get(path))) {
 
                 String answer = "";
-
                 if (file.exists()) {
                     System.out.println(
                             "Файл с таким именем уже существует."
@@ -45,7 +42,8 @@ public class Create extends Command {
                     try {
                         file.createNewFile();
                         if (file.exists()) {
-                            System.out.println("Файл " + filename + " успешно создан.");
+                            System.out.println(
+                                    "Файл " + filename + " успешно создан.");
                             if (!text.equals("")) {
                                 try (FileWriter writer = new FileWriter(
                                         path + File.separator + filename)) {
@@ -65,9 +63,7 @@ public class Create extends Command {
                 System.out.println("Путь не существует.");
             }
         } else {
-            System.out.println(
-                    "Неверный аргумент(ы)."
-                            + " Введите \"help\" для справки.");
+            System.out.println("Неверный аргумент(ы). Введите \"help\" для справки.");
         }
     }
 }

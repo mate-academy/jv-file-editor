@@ -26,12 +26,6 @@ public class Info extends Command {
     @Override
     public void execute(String... args) {
         if (args.length == 3) {
-            //Выводит краткую информацию по указанному файлу:
-            // количество символов,
-            // строк,
-            // слов,
-            // дату и время последнего изменения,
-            // размер файла
 
             String path = args[1];
             String filename = args[2];
@@ -43,9 +37,10 @@ public class Info extends Command {
                             "Файла с таким именем не существует.");
                 } else {
                     try (BufferedReader br = new BufferedReader(
-                            new FileReader(
-                                    path + File.separator + filename))) {
+                            new FileReader(path + File.separator + filename))) {
+
                         List<String> lines = new ArrayList<>();
+
                         while (br.ready()) {
                             lines.add(br.readLine());
                         }
@@ -66,15 +61,13 @@ public class Info extends Command {
                                 Files.readAttributes(
                                         Paths.get(path + File.separator + filename),
                                         BasicFileAttributes.class);
-                        System.out.format(
-                                format, "Время последнего изменения",
-                                new SimpleDateFormat(
-                                        "HH:mm:ss dd.MM.yyy").format(
-                                        new Date(attributes
-                                                .lastModifiedTime()
-                                                .toMillis())));
-                        System.out.format(format,
-                                "Размер", attributes.size());
+                        System.out.format(format, "Время последнего изменения",
+                                new SimpleDateFormat("HH:mm:ss dd.MM.yyy")
+                                        .format(new Date(
+                                                attributes
+                                                        .lastModifiedTime()
+                                                        .toMillis())));
+                        System.out.format(format, "Размер", attributes.size());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -83,8 +76,7 @@ public class Info extends Command {
                 System.out.println("Путь не существует.");
             }
         } else {
-            System.out.println(
-                    "Неверный аргумент(ы). Введите \"help\" для справки.");
+            System.out.println("Неверный аргумент(ы). Введите \"help\" для справки.");
         }
     }
 }

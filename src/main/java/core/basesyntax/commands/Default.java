@@ -27,8 +27,10 @@ public class Default extends Command {
                 String[] splitData = answerPathAndFilename.split(" ");
                 if (splitData.length == 2) {
                     String newCommand =
-                            "create " + splitData[0] + " "
-                                    + splitData[1] + " " + args[0];
+                            "create "
+                                    + splitData[0] + " "
+                                    + splitData[1] + " "
+                                    + args[0];
                     Create.INSTANCE.execute(newCommand.split(" "));
                 } else {
                     System.out.println("Неверный аргумент(ы). "
