@@ -95,10 +95,9 @@ public class FileEditor {
         System.out.println("Вы хотите сохранить данный текст в файл? "
                 + "Пожалуйста, введите команду 'save [path] [file-name]', "
                 + "и текст будет записан в указанный файл");
-        input = new Scanner(System.in).nextLine();
-        String[] answer = input.split("\\s");
-        if (answer[0].equals("save") && answer.length == 3) {
-            Files.writeString(Paths.get(answer[1] + answer[2]), text);
+        String[] reply = new Scanner(System.in).nextLine().split("\\s");
+        if (assertLength(reply, 3) && reply[0].equals("save")) {
+            Files.writeString(Paths.get(reply[1] + reply[2]), text);
             System.out.println("Текст записан! Введите следующую команду:");
         } else {
             System.out.println("Введите команду:");
