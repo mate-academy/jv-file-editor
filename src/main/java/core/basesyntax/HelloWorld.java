@@ -139,8 +139,8 @@ public class HelloWorld {
                     break;
                 }
                 default : {
-                    System.out.println("Сохранить текст? Y/N");
-                    scanner.nextLine(); //тут можно реализовать сохранение, но в ТЗ сказано "...должно появиться сообщение"
+                    System.out.println("Сохранить текст? Y/N");//тут можно реализовать сохранение
+                    scanner.nextLine(); //, но в ТЗ сказано "...должно появиться сообщение"
                     break;
                 }
             }
