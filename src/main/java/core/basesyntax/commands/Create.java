@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class Create extends Command {
 
-    public static final Create INSTANCE = new Create(
+    static final Create INSTANCE = new Create(
             "create",
             "[path] [file-name] [text]",
             "Создает текстовый файл по указанному пути.");

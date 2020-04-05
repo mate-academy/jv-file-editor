@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Default extends Command {
 
-    public static final Default INSTANCE = new Default(
+    static final Default INSTANCE = new Default(
             "default",
             "",
             "");

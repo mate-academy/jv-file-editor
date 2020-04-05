@@ -14,7 +14,7 @@ import java.util.List;
 
 public class Info extends Command {
 
-    public static final Info INSTANCE = new Info(
+    static final Info INSTANCE = new Info(
             "info",
             "[path] [file-name]",
             "Выводит краткую информацию по указанному файлу.");

@@ -2,7 +2,7 @@ package core.basesyntax.commands;
 
 public class Exit extends Command {
 
-    public static final Exit INSTANCE = new Exit(
+    static final Exit INSTANCE = new Exit(
             "exit",
             "[code]",
             "Завершение работы программы.");

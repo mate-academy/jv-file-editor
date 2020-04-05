@@ -2,7 +2,7 @@ package core.basesyntax.commands;
 
 public class Help extends Command {
 
-    public static final Help INSTANCE = new Help(
+    static final Help INSTANCE = new Help(
             "help",
             "[command]",
             "Выводит в консоль "

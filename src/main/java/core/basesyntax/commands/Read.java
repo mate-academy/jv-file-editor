@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 
 public class Read extends Command {
 
-    public static final Read INSTANCE = new Read(
+    static final Read INSTANCE = new Read(
             "read",
             "[path] [file-name]",
             "Считывает файл по указанному пути"

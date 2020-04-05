@@ -1,11 +1,6 @@
 package core.basesyntax;
 
-import core.basesyntax.commands.Create;
-import core.basesyntax.commands.Default;
-import core.basesyntax.commands.Exit;
-import core.basesyntax.commands.Help;
-import core.basesyntax.commands.Info;
-import core.basesyntax.commands.Read;
+import core.basesyntax.commands.Command;
 import java.util.Scanner;
 
 public class Main {
@@ -20,27 +15,28 @@ public class Main {
                 String command = inputSplitData[0];
                 switch (command) {
                     case "create": {
-                        Create.INSTANCE.execute(inputSplitData);
+                        Command.create(inputSplitData);
                         break;
                     }
                     case "read": {
-                        Read.INSTANCE.execute(inputSplitData);
+                        Command.read(inputSplitData);
                         break;
                     }
                     case "info": {
-                        Info.INSTANCE.execute(inputSplitData);
+                        Command.info(inputSplitData);
                         break;
                     }
                     case "help": {
-                        Help.INSTANCE.execute(inputSplitData);
+                        Command.help(inputSplitData);
                         break;
                     }
                     case "exit": {
-                        Exit.INSTANCE.execute(inputSplitData);
+                        Command.exit(inputSplitData);
                         break;
                     }
                     default: {
-                        Default.INSTANCE.execute(inputLine);
+                        Command.executeUnrecognizedInputCase(inputLine);
+                        break;
                     }
                 }
                 System.out.print("$ ");
