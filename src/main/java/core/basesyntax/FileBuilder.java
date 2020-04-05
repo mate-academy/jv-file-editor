@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class FileBuilder {
 
     public static void start() {
-        System.out.println("Hi i am FileBuilder " + "\n" + "For more information type 'help'");
+        System.out.println("Hi i am FileBuilder ");
         boolean answerExist = false;
         while (!answerExist) {
             System.out.println("Use 'help' for more information"
@@ -31,6 +31,7 @@ public class FileBuilder {
                     answerExist = false;
                     break;
                 case "exit":
+                    System.out.println("Exiting..." + "\n" + "DONE!");
                     break;
                 default:
                     if (input.endsWith(")")) {
