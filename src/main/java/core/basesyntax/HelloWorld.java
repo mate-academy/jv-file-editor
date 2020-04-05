@@ -16,8 +16,7 @@ public class HelloWorld {
         do {
             System.out.println(">");
             Scanner scanner = new Scanner(System.in);
-            String commandAndParams = scanner.nextLine();
-            args = commandAndParams.split("\\s+");
+            args = scanner.nextLine().split("\\s+");
             run(
                     args.length < 1 ? "" : args[0],
                     args.length < 2 ? "" : args[1],
@@ -29,7 +28,7 @@ public class HelloWorld {
     private static void run(String command, String param1, String param2) {
         switch (command) {
             case "":
-                printHelp();
+                System.out.println("To continue enter your command and parameters: ");
                 break;
             default:
                 runWithCommand(command, param1, param2);
@@ -68,12 +67,19 @@ public class HelloWorld {
         if (!isPresentDirAndFile(fileDir, fileName)) {
             return;
         }
-
         String filePath = fileDir + "/" + fileName;
         try {
             Path path = Paths.get(filePath);
             if (Files.exists(path)) {
-                System.out.println("Do you want to overwrite this file?");
+                System.out.println("The file already exists. To overwrite existing "
+                        + "file press 'y'.");
+                char overwrite;
+                overwrite = (char) System.in.read();
+                if (overwrite == 'y') {
+                    Files.delete(path);
+                    Files.createFile(path);
+                    System.out.println("File was overwritten: " + filePath);
+                }
             } else {
                 Files.createFile(path);
                 System.out.println("File created: " + filePath);
