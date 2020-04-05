@@ -4,17 +4,17 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Scanner;
+
 import static java.nio.file.Files.getLastModifiedTime;
 
-/**
- * Feel free to remove this class and create your own.
- */
 public class FileEditor {
-
+    String tempTextToFile;
+    String inputFromConsole;
     private static final DateFormat FORMAT = new SimpleDateFormat("dd MM yyyy HH:mm:ss");
 
     public static void main(String[] args) {
@@ -25,41 +25,89 @@ public class FileEditor {
     public void FilesEditorStart() {
         System.out.println("To use the program, enter the command and press Enter");
         System.out.println("To get information about available commands write @help");
-        System.out.println();
-        System.out.println("To start the program from the beginning write @start");
+        System.out.println("To start the program from the beginning write @start to exit the program write @exit");
+        FilesEditor();
+    }
+
+    public void FilesEditor() {
         System.out.println();
         System.out.println("Write command pleas!");
-        String inputFromConsole = new Scanner(System.in).nextLine();
+        inputFromConsole = new Scanner(System.in).nextLine();
         if (inputFromConsole.equalsIgnoreCase("create")) {
+            System.out.println("Write path file!to create the file");
             createFile();
             System.out.println();
-            FilesEditorStart();
-        }
-        if (inputFromConsole.equalsIgnoreCase("read")) {
+            FilesEditor();
+        } else if (inputFromConsole.equalsIgnoreCase("read")) {
             readFile();
             System.out.println();
-            FilesEditorStart();
-        }
-        if (inputFromConsole.equalsIgnoreCase("info")) {
+            FilesEditor();
+        } else if (inputFromConsole.equalsIgnoreCase("info")) {
             infoAboutFile();
             System.out.println();
-            FilesEditorStart();
-        }
-        if (inputFromConsole.equalsIgnoreCase("help")) {
+            FilesEditor();
+        } else if (inputFromConsole.equalsIgnoreCase("help")) {
             help();
             System.out.println();
-            FilesEditorStart();
-        }
-        if (inputFromConsole.equalsIgnoreCase("start")) {
+            FilesEditor();
+        } else if (inputFromConsole.equalsIgnoreCase("start")) {
             System.out.println();
-            FilesEditorStart();
-        } else {
-            System.out.println("Unknown command, try again");
-            System.out.println();
-            FilesEditorStart();
-        }
-        if (inputFromConsole.equalsIgnoreCase("exit")) {
+            FilesEditor();
+        } else if (inputFromConsole.equalsIgnoreCase("exit")) {
             System.exit(0);
+        } else {
+            tempTextToFile = inputFromConsole;
+            saveText();
+        }
+    }
+
+    private void saveText() {
+        System.out.println("Invalid command, do you wont to save text in file @Yes/@No?");
+        inputFromConsole = new Scanner(System.in).nextLine();
+        if (inputFromConsole.equalsIgnoreCase("Yes")) {
+            System.out.println("Write path file to save!");
+            String inputForPathFilesWrite = new Scanner(System.in).nextLine();
+            if (Files.exists(Paths.get(inputForPathFilesWrite))) {
+                System.out.println("File already exists  overwrite it @Yes/@No or add text to this file @Add?");
+                String input = new Scanner(System.in).nextLine();
+                if (input.equalsIgnoreCase("Yes")) {
+                    try {
+                        Files.write(Paths.get(inputForPathFilesWrite), tempTextToFile.getBytes());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    if (Files.exists(Paths.get(inputForPathFilesWrite))) {
+                        System.out.println("File created successfully");
+                        FilesEditor();
+                    }
+                } else if (input.equalsIgnoreCase("No")) {
+                    saveText();
+                } else if (input.equalsIgnoreCase("Add")) {
+                    try {
+                        Files.write(Paths.get(inputForPathFilesWrite), tempTextToFile.getBytes(), StandardOpenOption.APPEND);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    if (Files.exists(Paths.get(inputForPathFilesWrite))) {
+                        System.out.println("File recorded successfully");
+                        FilesEditor();
+                    }
+                }
+            } else {
+                try {
+                    Files.write(Paths.get(inputForPathFilesWrite), tempTextToFile.getBytes());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (Files.exists(Paths.get(inputForPathFilesWrite))) {
+                    System.out.println("File created successfully");
+                    FilesEditor();
+                }
+            }
+        } else if (inputFromConsole.equalsIgnoreCase("No")) {
+            FilesEditor();
+        } else {
+            saveText();
         }
     }
 
@@ -72,7 +120,7 @@ public class FileEditor {
         System.out.println("for more information write command or write @start to use the program");
         String inputFromHelp = new Scanner(System.in).nextLine();
         if (inputFromHelp.equalsIgnoreCase("start")) {
-            FilesEditorStart();
+            FilesEditor();
         }
         if (inputFromHelp.equalsIgnoreCase("create")) {
             System.out.println("@create -creates a new file with the name entered in the console (after entering, press the enter)");
@@ -95,6 +143,10 @@ public class FileEditor {
         System.out.println("Write path file! to see information about the file");
         try {
             Path fileInfo = Paths.get(new Scanner(System.in).nextLine());
+            if (fileInfo.toString().equalsIgnoreCase("start")) {
+                System.out.println();
+                FilesEditor();
+            }
             List<String> stringForInfo = Files.readAllLines(fileInfo);
             int countOfSymbols = 0;
             int countOfWords = 0;
@@ -114,7 +166,7 @@ public class FileEditor {
             System.out.println("Last file changes were " + FORMAT.format(getLastModifiedTime(fileInfo).toMillis()));
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Wrong name.Pleas write correct name or directory");
+            System.out.println("Wrong name.Pleas write correct name or directory or write @start to enter another command");
             infoAboutFile();
         }
     }
@@ -123,15 +175,15 @@ public class FileEditor {
         System.out.println("Write path file! to read the file");
         try {
             System.out.println(toString(Files.readAllLines(Paths.get(new Scanner(System.in).nextLine()))));
+
         } catch (IOException e) {
-            System.out.println("Wrong name.Pleas write correct name or directory");
             e.printStackTrace();
-            readFile();
+            System.out.println("Wrong name.Pleas try again");
+            FilesEditor();
         }
     }
 
     private void createFile() {
-        System.out.println("Write path file!to create the file");
         try {
             Path created = Files.createFile(Paths.get(new Scanner(System.in).nextLine()));
             if (Files.exists(Paths.get(created.toUri()))) {
@@ -139,8 +191,8 @@ public class FileEditor {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Wrong name.Pleas write another name or existing directory");
-            createFile();
+            System.out.println("Wrong name.Pleas try again and  write another name or existing directory");
+            FilesEditor();
         }
     }
 
