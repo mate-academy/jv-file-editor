@@ -7,14 +7,20 @@ import java.util.regex.Pattern;
 
 public class MainApp {
 
+    public static final String REGEX2WORD = "^\\w{4}\\s\\[\\w{4,6}]$";
+    public static final String REGEX3WORD = "^\\w{4,6}\\s\\[.+]\\s\\[.+]$";
+
     public static void main(String[] args) {
-        Scanner scanner = null;
         boolean finalDecision = true;
         do {
-            String request = requestStringReturner();
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("\nWrite your request in next format "
+                    + "'command [/path/.../] [filename.extension]' "
+                    + "or write 'help' to see all available commands: ");
+            String request = scanner.nextLine();
 
-            Pattern pattern2Word = Pattern.compile("^\\w{4}\\s\\[\\w{4,6}]$");
-            Pattern pattern3Word = Pattern.compile("^\\w{4,6}\\s\\[.+]\\s\\[.+]$");
+            Pattern pattern2Word = Pattern.compile(REGEX2WORD);
+            Pattern pattern3Word = Pattern.compile(REGEX3WORD);
             Matcher matcher2Word = pattern2Word.matcher(request);
             Matcher matcher3Word = pattern3Word.matcher(request);
 
@@ -78,20 +84,8 @@ public class MainApp {
                     }
                 } while (localDecision);
             }
-        } while (finalDecision);
-
-        System.out.println("Program is ending...");
-        if (scanner != null) {
             scanner.close();
-        }
-    }
-
-    public static String requestStringReturner() {
-        Scanner scanner;
-        scanner = new Scanner(System.in);
-        System.out.print("\nWrite your request in next format "
-                + "'command [/path/.../] [filename.extension]' "
-                + "or write 'help' to see all available commands: ");
-        return scanner.nextLine();
+        } while (finalDecision);
+        System.out.println("Program is ending...");
     }
 }
