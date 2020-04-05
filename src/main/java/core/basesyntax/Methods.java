@@ -41,10 +41,10 @@ public class Methods {
         } else {
             try {
                 Files.createFile(file);
+                System.out.println("File created.");
             } catch (IOException e) {
                 System.out.println("Path does not exist!");
             }
-            System.out.println("File created.");
         }
     }
 
