@@ -1,7 +1,4 @@
 package core.basesyntax;
-/**
- * Feel free to remove this class and create your own.
- */
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -17,8 +14,9 @@ import java.util.Scanner;
 public class HelloWorld {
     public static void main(String[] args) {
         do {
-            Scanner s = new Scanner(System.in);
-            String commandAndParams = s.nextLine();
+            System.out.println(">");
+            Scanner scanner = new Scanner(System.in);
+            String commandAndParams = scanner.nextLine();
             args = commandAndParams.split("\\s+");
             run(
                     args.length < 1 ? "" : args[0],
@@ -32,6 +30,7 @@ public class HelloWorld {
         switch (command) {
             case "":
                 printHelp();
+                break;
             default:
                 runWithCommand(command, param1, param2);
         }
@@ -39,13 +38,6 @@ public class HelloWorld {
 
     private static void runWithCommand(String command, String param1, String param2) {
         switch (command) {
-            case "help":
-                if (param1.isEmpty()) {
-                    printHelp();
-                } else {
-                    printHelp(param1);
-                }
-                break;
             case "create":
                 createFile(param1, param2);
                 break;
@@ -58,6 +50,14 @@ public class HelloWorld {
             case "exit":
                 printExit();
                 System.exit(0);
+                break;
+            case "help":
+                if (param1.isEmpty()) {
+                    printHelp();
+                } else {
+                    printHelp(param1);
+                }
+                break;
             default:
                 printUnsupportedCommand();
                 break;
@@ -65,32 +65,29 @@ public class HelloWorld {
     }
 
     public static void createFile(String fileDir, String fileName) {
+        if (!isPresentDirAndFile(fileDir, fileName)) {
+            return;
+        }
+
         String filePath = fileDir + "/" + fileName;
         try {
             Path path = Paths.get(filePath);
             if (Files.exists(path)) {
-                char overwriteYesOrNo;
-                do {
-                    System.out.println("File already exist: " + filePath + ".\nOverwrite? (y/n)");
-                    overwriteYesOrNo = (char) System.in.read();
-                } while (!(overwriteYesOrNo == 'y' || overwriteYesOrNo == 'n'));
-                if (overwriteYesOrNo == 'y') {
-                    Files.delete(path);
-                    Files.createFile(path);
-                    System.out.println("File overwritten: " + filePath);
-                }
+                System.out.println("Do you want to overwrite this file?");
             } else {
                 Files.createFile(path);
                 System.out.println("File created: " + filePath);
             }
         } catch (Exception e) {
             printFileError(filePath);
-            System.exit(-1);
         }
     }
 
-    public static void readFile(String path, String fileName) {
-        String filePath = path + "/" + fileName;
+    public static void readFile(String fileDir, String fileName) {
+        if (!isPresentDirAndFile(fileDir, fileName)) {
+            return;
+        }
+        String filePath = fileDir + "/" + fileName;
         try (BufferedReader reader =
                      new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -99,11 +96,13 @@ public class HelloWorld {
             }
         } catch (IOException x) {
             printFileError(filePath);
-            System.exit(-1);
         }
     }
 
     public static void getFileInfo(String fileDir, String fileName) {
+        if (!isPresentDirAndFile(fileDir, fileName)) {
+            return;
+        }
         String filePath = fileDir + "/" + fileName;
         int lineCount = 0;
         int wordCount = 0;
@@ -125,44 +124,47 @@ public class HelloWorld {
             lastModified = Files.getLastModifiedTime(path);
         } catch (Exception x) {
             printFileError(filePath);
-            System.exit(-1);
+            printFileError(filePath);
         }
         System.out.println(String.join("\n", new String[] {
-                "File path: " + filePath
-                , "Number of lines: " + lineCount
-                , "Number of words: " + wordCount
-                , "Number of chars: " + charCount
-                , "File size: " + fileSize
-                , "Last modified: " + lastModified
+                "File path: " + filePath,
+                "Number of lines: " + lineCount,
+                "Number of words: " + wordCount,
+                "Number of chars: " + charCount,
+                "File size: " + fileSize,
+                "Last modified: " + lastModified
         }));
     }
 
-
     private static Map<String, String> getAllCommandsHelp() {
         return new LinkedHashMap<>() {{
-            put("create", String.join("\n", new String[] {
-                    "- create [path] [file-name]"
-                    , "creates file if the path exists and there is no such file already"
-                    , " "
-            }));
-            put("read", String.join("\n", new String[] {
-                    "- read [path] [file-name]"
-                    , "reads a file and prints content to console, if the file and path exist"
-                    , " "
-            }));
-            put("info", String.join("\n", new String[] {
-                    "info [path] [file-name]"
-                    , "prints brief info about the file: number of symbols, words, lines,"
-                    , "date and time of last modification, size"
-                    , ""
-                    , " "
-            }));
-            put("help", String.join("\n", new String[] {
-                    "help [command]"
-                    , "prints all available commands and information for them."
-                    , " "
-            }));
-        }};
+                put("create", String.join("\n", new String[] {
+                        "- create [path] [file-name]",
+                        "Creates file if the path exists and there is no such file already.",
+                        " "
+                }));
+                put("read", String.join("\n", new String[] {
+                        "- read [path] [file-name]",
+                        "Reads a file and prints content to console, if the file and path exist.",
+                        " "
+                }));
+                put("info", String.join("\n", new String[] {
+                        "- info [path] [file-name]",
+                        "Prints brief info about the file: number of symbols, words, lines,",
+                        "date and time of last modification, size.",
+                        " "
+                }));
+                put("help", String.join("\n", new String[] {
+                        "- help [command]",
+                        "Prints all available commands and information for them.",
+                        " "
+                }));
+                put("exit", String.join("\n", new String[] {
+                        "- exit",
+                        "Aborts the application work.",
+                        " "
+                }));
+            }};
     }
 
     public static void printHelp() {
@@ -177,17 +179,28 @@ public class HelloWorld {
         if (commandHelp != null) {
             System.out.println(commandHelp);
         } else {
-            System.out.println("Command not supported");
+            System.out.println("There is no description for '" + command + "' available.");
         }
     }
 
     public static void printExit() {
-        System.out.println("Exit.");
+        System.out.println("Exit. That's all, folks...");
     }
+
+    public static boolean isPresentDirAndFile(String fileDir, String fileName) {
+        if (fileName.isEmpty() || fileDir.isEmpty()) {
+            System.out.println("Path and/or file name are absent.");
+            return false;
+        }
+        return true;
+    }
+
     public static void printUnsupportedCommand() {
-        System.out.println("Command not supported, please save your text.");
+        System.out.println("Command not found. Do you want to save this text?");
     }
+
     public static void printFileError(String filePath) {
-        System.out.println("Error performing operation on file: " + filePath);
+        System.out.println("Error performing operation on file: " + filePath
+                + ". Please, assure file name and/or path are correct.");
     }
 }
