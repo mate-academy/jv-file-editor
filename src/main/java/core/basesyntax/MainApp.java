@@ -11,9 +11,10 @@ public class MainApp {
     public static final String REGEX3WORD = "^\\w{4,6}\\s\\[.+]\\s\\[.+]$";
 
     public static void main(String[] args) {
+        Scanner scanner;
         boolean finalDecision = true;
         do {
-            Scanner scanner = new Scanner(System.in);
+            scanner = new Scanner(System.in);
             System.out.print("\nWrite your request in next format "
                     + "'command [/path/.../] [filename.extension]' "
                     + "or write 'help' to see all available commands: ");
@@ -84,8 +85,8 @@ public class MainApp {
                     }
                 } while (localDecision);
             }
-            scanner.close();
         } while (finalDecision);
         System.out.println("Program is ending...");
+        scanner.close();
     }
 }
