@@ -16,7 +16,7 @@ public class Creating {
         Pattern pattern = Pattern.compile("[\\[](.*?)[\\]]");
         Matcher matcher = pattern.matcher(comand);
         List<String> list = new ArrayList<>();
-        while (matcher.find()){
+        while (matcher.find()) {
             list.add(matcher.group(1));
         }
         if (list.size() != 2) {
@@ -39,9 +39,8 @@ public class Creating {
                 Files.delete(file);
                 Files.createFile(file);
             }
+        } else {
+            Files.createFile(file);
         }
-        else {
-                Files.createFile(file);
-            }
-        }
+    }
 }

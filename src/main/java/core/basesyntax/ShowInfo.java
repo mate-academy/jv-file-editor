@@ -8,7 +8,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,7 +17,7 @@ public class ShowInfo {
         Pattern pattern = Pattern.compile("[\\[](.*?)[\\]]");
         Matcher matcher = pattern.matcher(comand);
         List<String> list = new ArrayList<>();
-        while (matcher.find()){
+        while (matcher.find()) {
             list.add(matcher.group(1));
         }
         if (list.size() != 2) {
@@ -43,7 +42,8 @@ public class ShowInfo {
         System.out.println("Кількість символів - " + symbols);
         System.out.println("Кількість рядків - " + lines);
         System.out.println("Кількість слів - " + words);
-        System.out.println("Дата і час останньої зміни - " + new Date(new File(adressToFile).lastModified()));
+        System.out.println("Дата і час останньої зміни - "
+                + new Date(new File(adressToFile).lastModified()));
         System.out.println("Розмір файлу - " + new File(adressToFile).length() + " байт");
 
     }

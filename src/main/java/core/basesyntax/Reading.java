@@ -6,7 +6,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,7 +15,7 @@ public class Reading {
         Pattern pattern = Pattern.compile("[\\[](.*?)[\\]]");
         Matcher matcher = pattern.matcher(comand);
         List<String> list = new ArrayList<>();
-        while (matcher.find()){
+        while (matcher.find()) {
             list.add(matcher.group(1));
         }
         if (list.size() != 2) {
@@ -34,8 +33,7 @@ public class Reading {
         }
         if (!Files.exists(file)) {
             System.out.println("файлу з таким іменем не існує");
-        }
-        else {
+        } else {
             List<String> lines = Files.readAllLines(file);
             for (String s : lines) {
                 System.out.println(s);
