@@ -92,7 +92,7 @@ public class HelloWorld {
         }
     }
 
-    public static void info(String path, String name)  {
+    public static void info(String path, String name) {
         int charCount = 0;
         int wordCount = 0;
         int lineCount = 0;
