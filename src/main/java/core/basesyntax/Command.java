@@ -92,7 +92,8 @@ public class Command {
     public void help() {
         String[] commands = {"create", "read", "info", "exit"};
         System.out.println("Пример ввода пути папки: C:\\Document\n"
-                + "Пример ввода файлы: text.txt\n"
+                + "Пример ввода файла: text.txt\n"
+                + "Пример ввода команды: read C:\\Document text.txt"
                 + "Все доступные команды: ");
         for (String command : commands) {
             help(command);
