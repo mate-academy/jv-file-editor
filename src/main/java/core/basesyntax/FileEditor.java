@@ -6,12 +6,10 @@ import java.util.Scanner;
 public class FileEditor {
 
     public void start() {
-        Scanner scanner = new Scanner(System.in);
-        Command command = new Command(scanner);
-        try {
+        try (Scanner scanner = new Scanner(System.in)) {
+            Command command = new Command(scanner);
             boolean bool = true;
             while (bool) {
-                scanner = new Scanner(System.in);
                 System.out.println("Write command or text: ");
                 String[] input = scanner.nextLine().split(" ");
                 String path = input.length > 1 ? input[1] : "";
@@ -45,8 +43,6 @@ public class FileEditor {
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
-        } finally {
-            scanner.close();
         }
         System.out.println("Program is finished!");
     }
