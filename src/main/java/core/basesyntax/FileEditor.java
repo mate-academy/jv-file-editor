@@ -19,7 +19,8 @@ public class FileEditor {
             String fileName = input.length > 2 ? input[2] : "";
             switch (getCommand(input)) {
                 case 0:
-                    System.out.println("Вы ничего не ввели.");
+                    System.out.println("Вы ничего не ввели.\n"
+                            + "Воспользуйтесь командой help");
                     break;
                 case 1:
                     command.create(path, fileName);
