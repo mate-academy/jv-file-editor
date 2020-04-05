@@ -7,12 +7,13 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Feel free to remove this class and create your own.
  */
-public class HelloWorld {
+public class Program {
 
     private static String readFromConsole() {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
@@ -27,10 +28,10 @@ public class HelloWorld {
     }
 
     private static void findCommand(String command) {
-        String[] commandStrip = command.split(" ");
-        switch (commandStrip[0]) {
+        String[] commandSplit = command.split(" ");
+        switch (commandSplit[0]) {
             case ("help") : {
-                if (commandStrip.length == 1) {
+                if (commandSplit.length == 1) {
                     System.out.println("COMMAND LIST");
                     System.out.println("create [path] [file-name]");
                     System.out.println("read [path] [file-name]");
@@ -40,7 +41,7 @@ public class HelloWorld {
                     System.out.println("exit");
                     break;
                 } else {
-                    switch (commandStrip[1]) {
+                    switch (commandSplit[1]) {
                         case ("create") : {
                             String print = "create [path] [file-name] \n"
                                     + "Создает текстовый файл по указанному пути. \n"
@@ -103,24 +104,24 @@ public class HelloWorld {
                 break;
             }
             case ("create") : {
-                if (commandStrip.length == 3) {
-                    create(commandStrip[1], commandStrip[2]);
+                if (commandSplit.length == 3) {
+                    create(commandSplit[1], commandSplit[2]);
                 } else {
                     System.out.println("Created nothing.");
                 }
                 break;
             }
             case ("read") : {
-                if (commandStrip.length == 3) {
-                    read(commandStrip[1], commandStrip[2]);
+                if (commandSplit.length == 3) {
+                    read(commandSplit[1], commandSplit[2]);
                 } else {
                     System.out.println("Nothing to read.");
                 }
                 break;
             }
             case ("info") : {
-                if (commandStrip.length == 3) {
-                    info(commandStrip[1], commandStrip[2]);
+                if (commandSplit.length == 3) {
+                    info(commandSplit[1], commandSplit[2]);
                 } else {
                     System.out.println("Created nothing.");
                 }
@@ -153,8 +154,9 @@ public class HelloWorld {
                     + lines.size());
             System.out.println("Count of words = "
                     + lines.toString().split("\\s+").length);
-            System.out.println("Last time was modified = "
-                    + Files.getLastModifiedTime(Paths.get(fileName)));
+            Date date = new Date(Files.getLastModifiedTime(Paths.get(fileName)).toMillis());
+            System.out.println(String.format("Last time was modified = "
+                    + date.toString()));
             File file = new File(fileName);
             System.out.println("File size in bytes = "
                     + file.length());
