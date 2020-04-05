@@ -5,8 +5,6 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static core.basesyntax.Methods.*;
-
 public class MainApp {
 
     public static void main(String[] args) {
@@ -28,39 +26,39 @@ public class MainApp {
 
                 switch (command) {
                     case "create":
-                        createFile(path, filename);
+                        Methods.createFile(path, filename);
                         break;
                     case "read":
                         try {
-                            readFile(path, filename);
+                            Methods.readFile(path, filename);
                         } catch (IOException e) {
                             System.out.println("No file/directory found!");
                         }
                         break;
                     case "info":
                         try {
-                            fileInfo(path, filename);
+                            Methods.fileInfo(path, filename);
                         } catch (IOException e) {
                             System.out.println("No file/directory found!");
                         }
                         break;
                     default:
-                        saveText(command);
+                        Methods.saveText(command);
                 }
             } else if (matcher2Word.matches() && request.split(" ")[0]
                     .toLowerCase().contentEquals("help")) {
-                helpByCommand(request.split(" ")[1]
+                Methods.helpByCommand(request.split(" ")[1]
                         .substring(1, request.split(" ")[1].length() - 1));
             } else {
                 switch (request) {
                     case "help":
-                        help();
+                        Methods.help();
                         break;
                     case "exit":
                         finalDecision = false;
                         break;
                     default:
-                        saveText(request);
+                        Methods.saveText(request);
                 }
             }
 
@@ -91,8 +89,9 @@ public class MainApp {
     public static String requestStringReturner() {
         Scanner scanner;
         scanner = new Scanner(System.in);
-        System.out.print("\nWrite your request in next format 'command [/path/.../] [filename.extension]' " +
-                "or write 'help' to see all available commands: ");
+        System.out.print("\nWrite your request in next format "
+                + "'command [/path/.../] [filename.extension]' "
+                + "or write 'help' to see all available commands: ");
         return scanner.nextLine();
     }
 }

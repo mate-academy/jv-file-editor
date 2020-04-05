@@ -6,7 +6,6 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.attribute.FileTime;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Scanner;
@@ -17,9 +16,9 @@ public class Methods {
 
     private static Scanner scanner;
 
-    protected static void createFile(String pathURI, String filename) {
-        Path path = Paths.get(pathURI);
-        Path file = Paths.get(pathURI, filename);
+    protected static void createFile(String pathUri, String filename) {
+        Path path = Paths.get(pathUri);
+        Path file = Paths.get(pathUri, filename);
         if (Files.exists(file)) {
             boolean localDecision = true;
             do {
@@ -80,58 +79,57 @@ public class Methods {
     }
 
     protected static void help() {
-        System.out.println("create [path] [file-name]\n" +
-                "Создает текстовый файл по указанному пути. " +
-                "Если путь не существует, вывести соответствующее сообщение. " +
-                "Если файл уже существует, вывести запрос на его перезапись\n" +
-                "\n" +
-                "read [path] [file-name]\n" +
-                "Считывает файл по указанному пути и выводит текст в консоль. " +
-                "Если указанного пути и/или файла не существует, " +
-                "вывести соответствующее сообщение\n" +
-                "\n" +
-                "info [path] [file-name]\n" +
-                "Выводит краткую информацию по указанному файлу: " +
-                "количество символов, строк, слов, " +
-                "дату и время последнего изменения, размер файла\n" +
-                "\n" +
-                "help\n" +
-                "Выводит в консоль все доступные комманды и информацию к ним\n" +
-                "\n" +
-                "help [command]\n" +
-                "Выводит в консоль информацию по указанной команде\n" +
-                "\n" +
-                "exit\n" +
-                "Завершение работы программы");
+        System.out.println("create [path] [file-name]\n"
+                + "Создает текстовый файл по указанному пути. "
+                + "Если путь не существует, вывести соответствующее сообщение. "
+                + "Если файл уже существует, вывести запрос на его перезапись\n"
+                + "\n"
+                + "read [path] [file-name]\n"
+                + "Считывает файл по указанному пути и выводит текст в консоль. "
+                + "Если указанного пути и/или файла не существует, "
+                + "вывести соответствующее сообщение\n"
+                + "\n"
+                + "info [path] [file-name]\n"
+                + "Выводит краткую информацию по указанному файлу: "
+                + "количество символов, строк, слов, "
+                + "дату и время последнего изменения, размер файла\n"
+                + "\n"
+                + "help\n"
+                + "Выводит в консоль все доступные комманды и информацию к ним\n"
+                + "\n"
+                + "help [command]\n"
+                + "Выводит в консоль информацию по указанной команде\n"
+                + "\n"
+                + "exit\n"
+                + "Завершение работы программы");
     }
 
     protected static void helpByCommand(String command) {
         switch (command) {
             case "help":
-                System.out.println("help [command]\n" +
-                        "Выводит в консоль все доступные комманды и информацию к ним\n");
+                System.out.println("help [command]\n"
+                        + "Выводит в консоль все доступные комманды и информацию к ним\n");
                 break;
             case "create":
-                System.out.println("create [path] [file-name]\n" +
-                        "Создает текстовый файл по указанному пути. " +
-                        "Если путь не существует, вывести соответствующее сообщение. " +
-                        "Если файл уже существует, вывести запрос на его перезапись\n");
+                System.out.println("create [path] [file-name]\n"
+                        + "Создает текстовый файл по указанному пути. "
+                        + "Если путь не существует, вывести соответствующее сообщение. "
+                        + "Если файл уже существует, вывести запрос на его перезапись\n");
                 break;
             case "read":
-                System.out.println("read [path] [file-name]\n" +
-                        "Считывает файл по указанному пути и выводит текст в консоль. " +
-                        "Если указанного пути и/или файла не существует, " +
-                        "вывести соответствующее сообщение\n");
+                System.out.println("read [path] [file-name]\n"
+                        + "Считывает файл по указанному пути и выводит текст в консоль. "
+                        + "Если указанного пути и/или файла не существует, "
+                        + "вывести соответствующее сообщение\n");
                 break;
             case "info":
-                System.out.println("info [path] [file-name]\n" +
-                        "Выводит краткую информацию по указанному файлу: " +
-                        "количество символов, строк, слов, " +
-                        "дату и время последнего изменения, размер файла\n");
+                System.out.println("info [path] [file-name]\n"
+                        + "Выводит краткую информацию по указанному файлу: "
+                        + "количество символов, строк, слов, "
+                        + "дату и время последнего изменения, размер файла\n");
                 break;
             case "exit":
-                System.out.println("exit\n" +
-                        "Завершение работы программы");
+                System.out.println("exit\n" + "Завершение работы программы");
                 break;
             default:
                 System.out.println("Wrong command!");
@@ -146,8 +144,8 @@ public class Methods {
             String answer = scanner.nextLine();
             if (answer.contentEquals("y")) {
                 scanner = new Scanner(System.in);
-                System.out.print("Please indicate the name and path for a new file " +
-                        "in the next format [path] [name]: ");
+                System.out.print("Please indicate the name and path for a new file "
+                        + "in the next format [path] [name]: ");
                 Pattern pattern2Word = Pattern.compile("^\\[.+]\\s\\[.+]$");
                 String pathAndName = scanner.nextLine();
                 Matcher matcher2Word = pattern2Word.matcher(pathAndName);
