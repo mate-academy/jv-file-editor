@@ -13,8 +13,7 @@ public class FileEditor {
             System.out.println("Примечание, я умею "
                     + "работать только с .txt файлами.");
             System.out.println("Напишите комманду или текст: ");
-            String temp = scanner.nextLine();
-            String[] input = temp.split(" ");
+            String[] input = scanner.nextLine().split(" ");
             String path = input.length > 1 ? input[1] : "";
             String fileName = input.length > 2 ? input[2] : "";
             switch (getCommand(input)) {

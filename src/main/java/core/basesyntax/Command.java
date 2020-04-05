@@ -128,7 +128,8 @@ public class Command {
     public void save(String text) throws IOException {
         System.out.println("Сохраняю текст\n"
                 + "Введите полный путь к файлу с расширение .txt\n"
-                + "Пример ввода пути к файлу: C:\\Documents\\example.txt");
+                + "Пример ввода пути к файлу: C:\\Documents\\example.txt\n"
+                + "Если ошиблись с вводом, перезапустите программу и введите help");
         String path = answer.nextLine();
         if (Files.exists(Paths.get(path))) {
             System.out.println("Файлы существует, перезаписать его? Да или нет?");
