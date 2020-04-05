@@ -2,7 +2,7 @@ package core.basesyntax.commands;
 
 import java.util.Scanner;
 
-public class Default extends Command {
+class Default extends Command {
 
     static final Default INSTANCE = new Default(
             "default",

@@ -1,6 +1,6 @@
 package core.basesyntax.commands;
 
-public class Exit extends Command {
+class Exit extends Command {
 
     static final Exit INSTANCE = new Exit(
             "exit",

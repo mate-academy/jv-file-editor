@@ -1,6 +1,6 @@
 package core.basesyntax.commands;
 
-public class Help extends Command {
+class Help extends Command {
 
     static final Help INSTANCE = new Help(
             "help",

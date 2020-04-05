@@ -8,7 +8,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class Create extends Command {
+class Create extends Command {
 
     static final Create INSTANCE = new Create(
             "create",

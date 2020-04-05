@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Info extends Command {
+class Info extends Command {
 
     static final Info INSTANCE = new Info(
             "info",
