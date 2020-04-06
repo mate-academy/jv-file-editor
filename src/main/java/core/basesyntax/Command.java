@@ -16,22 +16,22 @@ public class Command {
     private static final String SEPARATOR = File.separator;
     private static final DateTimeFormatter FORMATTER =
             DateTimeFormatter.ofPattern("dd.MM.yy HH:mm:ss");
-    private Scanner answer = new Scanner(System.in);
+    private Scanner scanner = new Scanner(System.in);
 
     public void create(String path, String name) throws IOException {
         if (Files.exists(Paths.get(path))) {
             Path filePath = Paths.get(path + SEPARATOR + name);
             if (Files.exists(filePath)) {
                 System.out.println("Файлы существует, перезаписать его? Да или нет?");
-                String answerRead = answer.next();
+                String answerRead = scanner.next();
                 if (answerRead.equalsIgnoreCase("да")) {
                     System.out.println("Что перезаписать в файл?\n"
                             + "Что бы остановить вводить текст напишите: стоп");
-                    String text = answer.nextLine();
+                    String text = scanner.nextLine();
                     StringBuilder stringBuilder = new StringBuilder();
                     while (!text.equals("стоп")) {
                         stringBuilder.append(text).append("\n");
-                        text = answer.nextLine();
+                        text = scanner.nextLine();
                     }
                     writeToFile(stringBuilder.toString(), filePath);
                     System.out.println("Файл успешно перезаписан.");
@@ -39,11 +39,11 @@ public class Command {
             } else {
                 System.out.println("Записать что-то в файл?\n"
                         + "Что бы остановить вводить текст напишите: стоп");
-                String text = answer.nextLine();
+                String text = scanner.nextLine();
                 StringBuilder stringBuilder = new StringBuilder();
                 while (!text.equals("стоп")) {
                     stringBuilder.append(text).append("\n");
-                    text = answer.nextLine();
+                    text = scanner.nextLine();
                 }
                 Files.createFile(filePath);
                 System.out.println("Файл " + name + " создан");
@@ -130,10 +130,10 @@ public class Command {
                 + "Введите полный путь к файлу с расширение .txt\n"
                 + "Пример ввода пути к файлу: C:\\Documents\\example.txt\n"
                 + "Если ошиблись с вводом, перезапустите программу и введите help");
-        String path = answer.nextLine();
+        String path = scanner.nextLine();
         if (Files.exists(Paths.get(path))) {
             System.out.println("Файлы существует, перезаписать его? Да или нет?");
-            String answerRead = answer.next();
+            String answerRead = scanner.next();
             if (answerRead.equalsIgnoreCase("да")) {
                 writeToFile(text, Paths.get(path));
             } else {
@@ -148,6 +148,7 @@ public class Command {
 
     public void exit() {
         System.out.println("Программа закончила своЮ работу.");
+        scanner.close();
         System.exit(0);
     }
 }
