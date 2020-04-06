@@ -1,7 +1,5 @@
 package core.basesyntax;
 
-import org.w3c.dom.ls.LSOutput;
-
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,10 +10,10 @@ import java.util.regex.Pattern;
 public class MainAppAddition {
 
     private static boolean finalDecision = true;
+    private static final String REGEX2WORD = "^\\w{4}\\s\\[\\w{4,6}]$";
+    private static final String REGEX3WORD = "^\\w{4,6}\\s\\[.+]\\s\\[.+]$";
 
     public void mainApp() {
-        final String REGEX2WORD = "^\\w{4}\\s\\[\\w{4,6}]$";
-        final String REGEX3WORD = "^\\w{4,6}\\s\\[.+]\\s\\[.+]$";
         MainAppAddition app = new MainAppAddition();
         Scanner scanner;
         do {

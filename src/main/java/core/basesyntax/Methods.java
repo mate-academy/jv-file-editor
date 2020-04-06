@@ -16,9 +16,9 @@ import java.util.regex.Pattern;
 
 public class Methods {
 
-    private final HashMap<String, String> COMMAND_INFO = new HashMap<>();
+    private static final HashMap<String, String> COMMAND_INFO = new HashMap<>();
 
-    {
+    static {
         COMMAND_INFO.put("create", "create [path] [file-name]\n"
                 + "Создает текстовый файл по указанному пути. "
                 + "Если путь не существует, вывести соответствующее сообщение. "
