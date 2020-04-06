@@ -17,13 +17,8 @@ public class Console {
     private static final DateTimeFormatter FORMAT =
             DateTimeFormatter.ofPattern("dd.MM.yy HH:mm:ss");
 
-    public static void create() {
-        System.out.println("Write pls path to file and it's name" + "\n" + "EXAMPLE:"
-                + "'src/main/java/core/basesyntax/ExampleName'");
-        Scanner scan = new Scanner(System.in);
-        String input = scan.nextLine();
-        String fileName = input + ".txt";
-        File file = new File(fileName);
+    public void create(String[] path) {
+        File file = new File(path[1]);
         boolean exsit = false;
         try {
             while (!exsit) {
@@ -42,19 +37,14 @@ public class Console {
         }
     }
 
-    public static void read() {
-        System.out.println("Write pls path to file and it's name" + "\n" + "EXAMPLE:"
-                + "'src/main/java/core/basesyntax/ExampleName'");
-        Scanner scan = new Scanner(System.in);
-        String input = scan.nextLine();
-        if (input.equals("exit")) {
+    public void read(String path, String name) {
+        if (path.equals("exit")) {
             System.out.println("Exiting....");
         } else {
-            String fileName = input + ".txt";
-            Path pathFile = Paths.get(fileName);
+            Path pathFile = Paths.get(path + name);
             List<String> content;
             try {
-                content = Files.readAllLines(pathFile);
+                content = Files.readAllLines((pathFile));
 
             } catch (IOException e) {
                 throw new RuntimeException("Wrong PATH!");
@@ -67,19 +57,13 @@ public class Console {
         }
     }
 
-    public static void write(String input) {
-        System.out.println("Write pls path to file and it's name" + "\n" + "EXAMPLE:"
-                + "'src/main/java/core/basesyntax/ExampleName'");
-        Scanner a = new Scanner(System.in);
-        String path = a.nextLine();
-        if (path.equals("exit")) {
+    public void write(String[] path, String input1) {
+        if (path[1].equals("exit")) {
             System.out.println("Exiting....");
         } else {
-            String fileName = path + ".txt";
-
             try {
-                FileWriter file = new FileWriter(fileName);
-                file.write(input);
+                FileWriter file = new FileWriter(path[0] + path[1]);
+                file.write(input1);
                 file.flush();
                 System.out.println("Your text's successfully written");
             } catch (IOException e) {
@@ -88,12 +72,8 @@ public class Console {
         }
     }
 
-    public static void info() {
-        System.out.println("Write pls path to file and it's name" + "\n" + "EXAMPLE:"
-                + "'src/main/java/core/basesyntax/ExampleName'");
-        Scanner scan = new Scanner(System.in);
-        String fileName = scan.nextLine() + ".txt";
-        Path pathFile = Paths.get(fileName);
+    public void info(String[] path) {
+        Path pathFile = Paths.get(path[0] + path[1]);
         List<String> reader;
         LocalDateTime date;
         try {
@@ -116,11 +96,12 @@ public class Console {
         }
         String result = "CountOfChars: " + countChar + "\n" + "CountOfLINES: " + reader.size()
                 + "\n" + "CountOfWords: " + countWords + "\n" + "DateAndTimeOfTheLastChange "
-                + date.format(FORMAT) + "\n" + "FleLength: " + fileName.length() + " bytes";
+                + date.format(FORMAT) + "\n" + "FleLength: " + path[0] + path[1].length()
+                + " bytes";
         System.out.println(result);
     }
 
-    public static void help() {
+    public void help() {
         String a = "help:" + "\n" + "Выводит в консоль все доступные комманды и информацию к ним."
                 + "\n" + "create:" + "\n" + "Создает текстовый файл по указанному пути." + "\n"
                 + "info:" + "\n" + "" + "Выводит краткую информацию по пути." + "\n"
@@ -130,7 +111,7 @@ public class Console {
         System.out.println(a);
     }
 
-    public static void help(String command) {
+    public void help(String command) {
         switch (command) {
             case "help":
                 System.out.println("Выводит в консоль все доступные комманды и информацию к ним.");
@@ -160,6 +141,17 @@ public class Console {
                 System.out.println("Команда не опознана.");
                 break;
         }
+    }
+
+    public String[] getPN() {
+        Scanner scn = new Scanner(System.in);
+        System.out.println("Write pls path to your file" + "\n" + "EXAMPLE:"
+                + "'src/main/java/core/basesyntax'");
+        String path = scn.nextLine() + File.separator;
+        System.out.println("Write pls name of your file" + "\n" + "EXAMPLE:"
+                + "'ExampleName'");
+        String name = scn.nextLine() + ".txt";
+        return new String[]{path,name};
     }
 }
 

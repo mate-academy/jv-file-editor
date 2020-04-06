@@ -3,31 +3,38 @@ package core.basesyntax;
 import java.util.Scanner;
 
 public class FileBuilder {
+    public static void main(String[] args) {
+        FileBuilder a = new FileBuilder();
+        a.start();
+    }
 
-    public static void start() {
+    public void start() {
+        Scanner scan = new Scanner(System.in);
+        Console console = new Console();
         System.out.println("Hi i am FileBuilder ");
         boolean answerExist = false;
         while (!answerExist) {
             System.out.println("Use 'help' for more information"
                     + "\n" + "Write here your command:");
-            Scanner a = new Scanner(System.in);
-            String input = a.nextLine();
+            String input = scan.nextLine();
             answerExist = true;
             switch (input) {
                 case "help":
-                    Console.help();
+                    console.help();
                     answerExist = false;
                     break;
                 case "create":
-                    Console.create();
+                    console.create(console.getPN());
                     answerExist = false;
                     break;
                 case "read":
-                    Console.read();
+                    String[] a = console.getPN();
+                    console.create(a);
+                    console.read(a[0], a[1]);
                     answerExist = false;
                     break;
                 case "info":
-                    Console.info();
+                    console.info(console.getPN());
                     answerExist = false;
                     break;
                 case "exit":
@@ -35,7 +42,7 @@ public class FileBuilder {
                     break;
                 default:
                     if (input.endsWith(")")) {
-                        Console.help(input.substring(input.indexOf("(")
+                        console.help(input.substring(input.indexOf("(")
                                 + 1,input.lastIndexOf(")")));
                         answerExist = false;
                         break;
@@ -43,12 +50,12 @@ public class FileBuilder {
                         System.out.println("COMMAND NOT FOUND!" + "\n"
                                 + "Do you want save this text:" + "--> "
                                 + input + " 'yes' or 'no'?");
-                        String input1 = a.nextLine();
+                        String input1 = scan.nextLine();
                         boolean yorn = false;
                         while (!yorn) {
                             switch (input1.toLowerCase()) {
                                 case "yes":
-                                    Console.write(input);
+                                    console.write(console.getPN(),input);
                                     yorn = true;
                                     break;
                                 case ("no"):
@@ -59,7 +66,7 @@ public class FileBuilder {
                                     break;
                                 default:
                                     System.out.println("'yes' OR 'no' format pls.");
-                                    input1 = a.nextLine();
+                                    input1 = scan.nextLine();
                                     yorn = false;
                                     break;
                             }
