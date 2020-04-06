@@ -10,9 +10,11 @@ import java.util.Scanner;
 
 public class HelloWorld {
     public static void main(String[] args) throws IOException {
-        startProgram();
+        ConsoleProgram.startProgram();
     }
+}
 
+class ConsoleProgram {
     public static void startProgram() throws IOException {
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {
@@ -22,21 +24,9 @@ public class HelloWorld {
             switch (some[0]) {
                 case "help":
                     if (some.length > 1) {
-                        switch (some[1]) {
-                            case "exit":
-                                System.out.println("this command finish program");
-                                break;
-                            case "create":
-                                System.out.println("this command create new file");
-                                break;
-                            case "read":
-                                System.out.println("this command read from chose file");
-                                break;
-                            default:
-                                System.out.println("no such command");
-                        }
+                        helpInfo(some[1]);
                     } else {
-                        System.out.println("create\nread\nexit");
+                        System.out.println("create\nread\nexit\ninfo");
                     }
                     break;
                 case "info":
@@ -51,31 +41,13 @@ public class HelloWorld {
                     scanner.close();
                     break;
                 case "create":
-                    if (Files.exists(Paths.get(some[1]))) {
-                        System.out.println("name file already exist do you"
-                                + " want write in existing file (y/n)");
-                        String contentForFile = scanner.nextLine();
-                        String yesOrNO = scanner.nextLine();
-                        if (yesOrNO.toLowerCase().equals("yes")
-                                || yesOrNO.toLowerCase().equals("y")) {
-                            fileWriter(contentForFile,some[1]);
-                        }
-                    } else {
-                        Path createFile = Files.createFile(Paths.get(some[1]));
-                        System.out.println("file was created");
-                        String contentForFile = scanner.nextLine();
-                        String yesOrNO = scanner.nextLine();
-                        if (yesOrNO.toLowerCase().equals("yes")
-                                || yesOrNO.toLowerCase().equals("y")) {
-                            fileWriter(contentForFile,some[1]);
-                        }
-                    }
+                    create(some[1]);
                     break;
                 case "read":
                     readFromFile(some[1]);
                     break;
                 default:
-                    System.out.println("Do you want to save this:");
+                    System.out.println("Do you want to save this(y/n):");
                     String yesOrNO = scanner.nextLine();
                     if (yesOrNO.toLowerCase().equals("yes") || yesOrNO.toLowerCase().equals("y")) {
                         System.out.println("Please enter name of file: ");
@@ -86,13 +58,36 @@ public class HelloWorld {
         }
     }
 
+    public static void create(String argument) throws IOException {
+        Scanner scanner = new Scanner(System.in);
+        if (Files.exists(Paths.get(argument))) {
+            System.out.println("name file already exist do you"
+                    + " want write in existing file (y/n)");
+            String contentForFile = scanner.nextLine();
+            String trues = scanner.nextLine();
+            yesOrNo(contentForFile, trues, argument);
+        } else {
+            Path createFile = Files.createFile(Paths.get(argument));
+            System.out.println("file was created");
+            String contentForFile = scanner.nextLine();
+            String trues = scanner.nextLine();
+            yesOrNo(contentForFile, trues, argument);
+        }
+    }
+
+    public static void yesOrNo(String content, String trues, String result) {
+        if (trues.toLowerCase().equals("yes") || trues.toLowerCase().equals("y")) {
+            fileWriter(content, result);
+        }
+    }
+
     public static void fileWriter(String content, String fileName) {
         File file = new File(fileName);
         try (FileWriter fileWriter = new FileWriter(file)) {
             fileWriter.write(content);
             fileWriter.write("\n");
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("No such file", e);
         }
     }
 
@@ -104,4 +99,22 @@ public class HelloWorld {
             throw new RuntimeException("No such file", e);
         }
     }
+
+     public static void helpInfo(String argument) {
+         switch (argument) {
+             case "exit":
+                 System.out.println("this command finish program");
+                 break;
+             case "create":
+                 System.out.println("this command create new file");
+                 break;
+             case "read":
+                 System.out.println("this command read from chose file");
+                 break;
+             case "info":
+                 System.out.println("this command return info about file");
+             default:
+                 System.out.println("no such command");
+         }
+     }
 }
