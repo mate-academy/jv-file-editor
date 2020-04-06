@@ -35,6 +35,11 @@ public class FileEditor {
     }
 
     private void decide(String input) throws IOException {
+        if (input.equals("help")) {
+            help();
+        } else if (input.equals("exit")) {
+            System.exit(0);
+        }
         String[] tokens = input.split("\\s");
         if (tokens.length == 3) {
             switch (tokens[0]) {
@@ -52,17 +57,6 @@ public class FileEditor {
             }
         } else if (tokens.length == 2 && tokens[0].equals("help")) {
             help(tokens[1]);
-        } else if (tokens.length == 1) {
-            switch (tokens[0]) {
-                case "help":
-                    help();
-                    break;
-                case "exit":
-                    System.exit(0);
-                    break;
-                default:
-                    write(input);
-            }
         } else {
             write(input);
         }
@@ -151,5 +145,4 @@ public class FileEditor {
                 System.out.println("Такой программы не существует");
         }
     }
-
 }
