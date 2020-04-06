@@ -47,7 +47,18 @@ public class HelloWorld {
                     break;
                 }
                 default:
-                    System.out.println("Wrong input...");
+                    System.out.println("Would you like to save the printed text in the file? "
+                            + " Enter 'yes' if your answer is positive");
+                    String answer = scanner.next();
+                    File file = new File(path + filename);
+                    if (answer.equalsIgnoreCase("yes")) {
+                        try (FileWriter fileWriter = new FileWriter(file)) {
+                            fileWriter.write(choice);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
             }
 
         }
