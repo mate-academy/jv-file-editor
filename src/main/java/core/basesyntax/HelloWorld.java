@@ -15,7 +15,7 @@ public class HelloWorld {
         Scanner scanner = new Scanner(System.in);
         String command = scanner.next();
         byte exit = 1;
-        while (exit == 1) {
+        while (true) {
             switch (command) {
                 case "create":
                     String path = scanner.next();
