@@ -44,7 +44,7 @@ public class FileHelper {
             DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 
     private static FileHelper instance;
-    private static HashMap<Command, String> helpInfo;
+    private HashMap<Command, String> helpInfo;
 
     private FileHelper() {
         helpInfo = new HashMap<>();
