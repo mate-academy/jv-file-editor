@@ -13,11 +13,11 @@ import java.util.Scanner;
 /**
  * Feel free to remove this class and create your own.
  */
-public class HelloWorld {
-    private static Scanner scanner;
-    private static String WARNING = "Неверно введена команда.";
-    private static String GREETING = "Введите команду. Для просмотра всех команд введите [help].";
-    private static String[] description = new String[] {
+public class FileEditor {
+    private static final String WARNING = "Неверно введена команда.";
+    private static final String GREETING =
+            "Введите команду. Для просмотра всех команд введите [help].";
+    private static final String[] DESCRIPTION = new String[] {
             "create [path] [file-name] - Создает текстовый файл по указанному пути.",
             "read [path] [file-name] - Считывает файл по указанному пути и выводит текст в консоль",
             "info [path] [file-name] - Выводит краткую информацию по указанному файлу.",
@@ -25,11 +25,8 @@ public class HelloWorld {
             "help [command] - Выводит в консоль информацию по указанной команде.",
             "exit - Завершение работы программы."};
 
-    static {
-        scanner = new Scanner(System.in);
-    }
-
-    public static void ifCreate(String path, String fileName) throws IOException {
+    public static void create(String path, String fileName) throws IOException {
+        Scanner scanner = new Scanner(System.in);
         if (Files.notExists(Paths.get(path))) {
             System.out.println("Введённый путь не существует.");
             return;
@@ -47,7 +44,7 @@ public class HelloWorld {
         System.out.println("Файл создан.");
     }
 
-    public static void ifRead(String path, String fileName) throws IOException {
+    public static void read(String path, String fileName) throws IOException {
         if (Files.notExists(Paths.get(path))) {
             System.out.println("Введённый путь не существует.");
             return;
@@ -60,7 +57,7 @@ public class HelloWorld {
         System.out.println(content);
     }
 
-    public static void ifInfo(String path, String fileName) throws IOException {
+    public static void info(String path, String fileName) throws IOException {
         Path pathFul = Paths.get(path + fileName);
         FileTime time = Files.getLastModifiedTime(pathFul);
         ZonedDateTime modTime = ZonedDateTime.ofInstant(time.toInstant(),
@@ -73,23 +70,23 @@ public class HelloWorld {
         System.out.println("Количество симолов - " + Files.readString(pathFul).split("").length);
     }
 
-    public static void ifHelp(String[] enter) {
+    public static void help(String[] enter) {
         if (enter.length == 2) {
             switch (enter[1]) {
                 case "create" : {
-                    System.out.println(description[0]);
+                    System.out.println(DESCRIPTION[0]);
                     break;
                 }
                 case "read" : {
-                    System.out.println(description[1]);
+                    System.out.println(DESCRIPTION[1]);
                     break;
                 }
                 case "info" : {
-                    System.out.println(description[2]);
+                    System.out.println(DESCRIPTION[2]);
                     break;
                 }
                 case "exit" : {
-                    System.out.println(description[5]);
+                    System.out.println(DESCRIPTION[5]);
                     break;
                 }
                 default: {
@@ -98,13 +95,14 @@ public class HelloWorld {
                 }
             }
         } else {
-            for (String descr : description) {
+            for (String descr : DESCRIPTION) {
                 System.out.println(descr);
             }
         }
     }
 
     public static void main(String[] args) throws IOException {
+        Scanner scanner = new Scanner(System.in);
         System.out.println(GREETING);
         String enteredString = scanner.nextLine();
         while (!enteredString.equals("exit")) {
@@ -112,7 +110,7 @@ public class HelloWorld {
             switch (enStringAsArray[0]) {
                 case "create" : {
                     if (enStringAsArray.length == 3) {
-                        ifCreate(enStringAsArray[1], enStringAsArray[2]);
+                        create(enStringAsArray[1], enStringAsArray[2]);
                     } else {
                         System.out.println(WARNING);
                     }
@@ -120,7 +118,7 @@ public class HelloWorld {
                 }
                 case "read" : {
                     if (enStringAsArray.length == 3) {
-                        ifRead(enStringAsArray[1], enStringAsArray[2]);
+                        read(enStringAsArray[1], enStringAsArray[2]);
                     } else {
                         System.out.println(WARNING);
                     }
@@ -128,14 +126,14 @@ public class HelloWorld {
                 }
                 case "info" : {
                     if (enStringAsArray.length == 3) {
-                        ifInfo(enStringAsArray[1], enStringAsArray[2]);
+                        info(enStringAsArray[1], enStringAsArray[2]);
                     } else {
                         System.out.println(WARNING);
                     }
                     break;
                 }
                 case "help" : {
-                    ifHelp(enStringAsArray);
+                    help(enStringAsArray);
                     break;
                 }
                 default : {
