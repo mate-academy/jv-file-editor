@@ -36,7 +36,7 @@ public class FileEditor {
 
     private void decide(String input) throws IOException {
         String[] tokens = input.split("\\s");
-        if (assertLength(tokens, 3)) {
+        if (tokens.length == 3) {
             switch (tokens[0]) {
                 case "create":
                     create(Paths.get(tokens[1] + tokens[2]));
@@ -50,9 +50,9 @@ public class FileEditor {
                 default:
                     write(input);
             }
-        } else if (assertLength(tokens, 2) && tokens[0].equals("help")) {
+        } else if (tokens.length == 2 && tokens[0].equals("help")) {
             help(tokens[1]);
-        } else if (assertLength(tokens, 1)) {
+        } else if (tokens.length == 1) {
             switch (tokens[0]) {
                 case "help":
                     help();
@@ -91,21 +91,16 @@ public class FileEditor {
     }
 
     private void write(String input) throws IOException {
-        String text = input;
         System.out.println("Вы хотите сохранить данный текст в файл? "
                 + "Пожалуйста, введите команду 'save [path] [file-name]', "
                 + "и текст будет записан в указанный файл");
         String[] reply = new Scanner(System.in).nextLine().split("\\s");
-        if (assertLength(reply, 3) && reply[0].equals("save")) {
-            Files.writeString(Paths.get(reply[1] + reply[2]), text);
+        if (reply.length == 3 && reply[0].equals("save")) {
+            Files.writeString(Paths.get(reply[1] + reply[2]), input);
             System.out.println("Текст записан! Введите следующую команду:");
         } else {
             System.out.println("Введите команду:");
         }
-    }
-
-    private boolean assertLength(String[] tokens, int length) {
-        return tokens.length == length;
     }
 
     private void info(Path file) throws IOException {
