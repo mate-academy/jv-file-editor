@@ -6,9 +6,6 @@ import java.util.Scanner;
 
 import static core.basesyntax.GeneratMenu.generatMenu;
 
-/**
- * Feel free to remove this class and create your own.
- */
 public class Application {
     public static void main(String[] args) throws IOException {
         GeneratMenu generatMenu = new GeneratMenu();
