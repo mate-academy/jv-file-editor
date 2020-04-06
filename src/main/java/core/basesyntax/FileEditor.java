@@ -1,5 +1,6 @@
 package core.basesyntax;
 
+import javax.sound.midi.Soundbank;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -29,7 +30,7 @@ public class FileEditor {
             try {
                 decide(input);
             } catch (IOException e) {
-                throw new RuntimeException("Произошла ошибка!", e);
+                System.out.println("Произошла ошибка! Файла не существует. Повторите попытку:");
             }
         } while (!input.equals("exit"));
     }
