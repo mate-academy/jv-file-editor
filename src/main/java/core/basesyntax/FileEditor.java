@@ -7,6 +7,7 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.util.Scanner;
 
 public class FileEditor {
@@ -124,12 +125,13 @@ public class FileEditor {
         }
         Path fileNamePath = Paths.get(path + fileName);
         try {
+            Date date = new Date(Files.getLastModifiedTime(fileNamePath).toMillis());
             System.out.println(String.format(
                     "Symbols count : %s", Files.readString(fileNamePath).length()));
             System.out.println(String.format(
                     "Rows count  : %s", Files.readAllLines(fileNamePath).size()));
             System.out.println(String.format(
-                    "Last modified : %s", Files.getLastModifiedTime(fileNamePath)));
+                    "Last modified : %s", date.toString()));
             System.out.println(String.format(
                     "File size : %s bytes", Files.size(fileNamePath)));
         } catch (IOException e) {
