@@ -9,11 +9,6 @@ public class ConsoleHelper {
             "(press 'y' for \"yes\" answer, other key for no)";
     private static final String CORRECT_YES_ANSWER = "y";
     private static ConsoleHelper instance;
-    private BufferedReader consoleReader;
-
-    private ConsoleHelper() {
-        consoleReader = new BufferedReader(new InputStreamReader(System.in));
-    }
 
     public static ConsoleHelper getInstance() {
         if (instance == null) {
@@ -26,7 +21,7 @@ public class ConsoleHelper {
         try {
             String line;
             do {
-                line = consoleReader.readLine();
+                line = new BufferedReader(new InputStreamReader(System.in)).readLine();
             } while (line.isEmpty());
             return line;
         } catch (IOException e) {
@@ -35,12 +30,8 @@ public class ConsoleHelper {
     }
 
     public boolean askYesNoQuestion(String question) {
-        try {
-            System.out.println(question);
-            System.out.println(YES_NO_HINT);
-            return consoleReader.readLine().toLowerCase().equals(CORRECT_YES_ANSWER);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        System.out.println(question);
+        System.out.println(YES_NO_HINT);
+        return readNotEmptyLine().toLowerCase().equals(CORRECT_YES_ANSWER);
     }
 }
