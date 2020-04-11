@@ -18,7 +18,7 @@ public class SimpleFileEditor {
     private static final String EXIT = "exit";
     private static final String YES = "yes";
     private static final String NOT = "not";
-    private static final String STOP = "stop";  // for test
+    private static final String STOP = "stop"; // for test
 
     public void readingCommand(String stop) {
         String command = "";
