@@ -18,10 +18,11 @@ public class SimpleFileEditor {
     private static final String EXIT = "exit";
     private static final String YES = "yes";
     private static final String NOT = "not";
+    private static final String STOP = "stop";  // for test
 
-    public void readingCommand() {
+    public void readingCommand(String stop) {
         String command = "";
-        while (!command.equals(EXIT)) {
+        while (!stop.equals(STOP) && !command.equals(EXIT)) {
             Scanner scanner = new Scanner(System.in);
             if (scanner.hasNext()) {
                 command = scanner.nextLine();
