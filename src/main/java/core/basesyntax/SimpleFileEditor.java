@@ -19,44 +19,37 @@ public class SimpleFileEditor {
     private static final String YES = "yes";
     private static final String NOT = "not";
 
-    public static void main(String[] args) {
+    public void readingCommand() {
         String command = "";
         while (!command.equals(EXIT)) {
             Scanner scanner = new Scanner(System.in);
             if (scanner.hasNext()) {
                 command = scanner.nextLine();
-                if (!readingCommand(command)) {
-                    return;
+                String[] wordsCommand = command.split(" ");
+                switch (wordsCommand[0]) {
+                    case CREATE:
+                        createFile(wordsCommand);
+                        break;
+                    case READ:
+                        readFile(wordsCommand);
+                        break;
+                    case INFO:
+                        infoAboutFile(wordsCommand);
+                        break;
+                    case HELP:
+                        help(wordsCommand);
+                        break;
+                    case EXIT :
+                        break;
+                    default:
+                        savingText(command);
                 }
             }
         }
+
     }
 
-    private static boolean readingCommand(String command) {
-        String[] wordsCommand = command.split(" ");
-        switch (wordsCommand[0]) {
-            case CREATE:
-                createFile(wordsCommand);
-                return true;
-            case READ:
-                readFile(wordsCommand);
-                return true;
-            case INFO:
-                infoAboutFile(wordsCommand);
-                return true;
-            case HELP:
-                help(wordsCommand);
-                break;
-            case EXIT:
-                return false;
-            default:
-                savingText(command);
-                return true;
-        }
-        return true;
-    }
-
-    private static void savingText(String command) {
+    private void savingText(String command) {
         System.out.println("Do you want to save the text to a file?");
         String answer = "";
         while (!answer.equals(YES)) {
@@ -78,7 +71,7 @@ public class SimpleFileEditor {
         }
     }
 
-    private static void help(String[] wordsCommand) {
+    private void help(String[] wordsCommand) {
         if (validate(wordsCommand)) {
             if (wordsCommand.length == 1) {
                 writeInfoAboutCommand(CREATE);
@@ -92,7 +85,7 @@ public class SimpleFileEditor {
         }
     }
 
-    private static void writeInfoAboutCommand(String command) {
+    private void writeInfoAboutCommand(String command) {
         switch (command) {
             case CREATE:
                 System.out.println("create : to create file, need to specify [path] [file-name]!");
@@ -114,7 +107,7 @@ public class SimpleFileEditor {
         }
     }
 
-    private static void infoAboutFile(String[] wordsCommand) {
+    private void infoAboutFile(String[] wordsCommand) {
         if (validate(wordsCommand)) {
             String pathString = wordsCommand[1].substring(1, wordsCommand[1].length() - 1);
             String fileNameString = wordsCommand[2].substring(1, wordsCommand[2].length() - 1);
@@ -143,7 +136,7 @@ public class SimpleFileEditor {
         }
     }
 
-    private static void createFile(String[] wordsCommand) {
+    private void createFile(String[] wordsCommand) {
         if (validate(wordsCommand)) {
             String pathString = wordsCommand[1].substring(1, wordsCommand[1].length() - 1);
             String fileNameString = wordsCommand[2].substring(1, wordsCommand[2].length() - 1);
@@ -181,7 +174,7 @@ public class SimpleFileEditor {
         }
     }
 
-    private static void readFile(String[] wordsCommand) {
+    private void readFile(String[] wordsCommand) {
         if (validate(wordsCommand)) {
             String pathString = wordsCommand[1].substring(1, wordsCommand[1].length() - 1);
             String fileNameString = wordsCommand[2].substring(1, wordsCommand[2].length() - 1);
@@ -205,7 +198,7 @@ public class SimpleFileEditor {
         }
     }
 
-    private static boolean validate(String[] wordsCommand) {
+    private boolean validate(String[] wordsCommand) {
         if (wordsCommand[0].equals(CREATE) || wordsCommand[0].equals(READ)
                 || wordsCommand[0].equals(INFO)) {
             if (wordsCommand.length != 3) {
