@@ -10,6 +10,6 @@ public class HelloWorldTest {
     @Test
     public void startSimpleFileEditor() {
         SimpleFileEditor fileEditor = new SimpleFileEditor();
-        fileEditor.readingCommand("stop");
+        fileEditor.startAndReadingCommand(false);
     }
 }

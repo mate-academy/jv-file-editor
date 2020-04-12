@@ -18,11 +18,10 @@ public class SimpleFileEditor {
     private static final String EXIT = "exit";
     private static final String YES = "yes";
     private static final String NOT = "not";
-    private static final String STOP = "stop"; // for test
 
-    public void readingCommand(String stop) {
+    public void startAndReadingCommand(boolean start) {
         String command = "";
-        while (!stop.equals(STOP) && !command.equals(EXIT)) {
+        while (start && !command.equals(EXIT)) {
             Scanner scanner = new Scanner(System.in);
             if (scanner.hasNext()) {
                 command = scanner.nextLine();
@@ -47,7 +46,6 @@ public class SimpleFileEditor {
                 }
             }
         }
-
     }
 
     private void savingText(String command) {
