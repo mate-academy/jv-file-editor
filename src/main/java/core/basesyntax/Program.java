@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class Program {
 
-    private static String readFromConsole() {
+    private String readFromConsole() {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
         String command = "";
         System.out.println("Please, write command and press ENTER");
@@ -27,75 +27,77 @@ public class Program {
         return command;
     }
 
-    private static void findCommand(String command) {
+    private void help(String[] commandSplit){
+        if (commandSplit.length == 1) {
+            System.out.println("COMMAND LIST");
+            System.out.println("create [path] [file-name]");
+            System.out.println("read [path] [file-name]");
+            System.out.println("info [path] [file-name]");
+            System.out.println("help");
+            System.out.println("help [command]");
+            System.out.println("exit");
+        } else {
+            switch (commandSplit[1]) {
+                case ("create") : {
+                    String print = "create [path] [file-name] \n"
+                            + "Создает текстовый файл по указанному пути. \n"
+                            + "Если путь не существует, вывести "
+                            + "соответствующее сообщение. \n"
+                            + "Если файл уже существует, "
+                            + "вывести запрос на его перезапись\n";
+                    System.out.println(print);
+                    break;
+                }
+                case ("read") : {
+                    String print = "read [path] [file-name]\n"
+                            + "Считывает файл по указанному пути и "
+                            + "выводит текст в консоль. \n"
+                            + "Если указанного пути и/или файла не существует, "
+                            + "вывести соответствующее сообщение\n";
+                    System.out.println(print);
+                    break;
+                }
+                case ("info") : {
+                    String print = "info [path] [file-name]\n"
+                            + "Выводит краткую информацию по указанному файлу: \n"
+                            + "количество символов, строк, слов, дату и"
+                            + "время последнего изменения, размер файла\n";
+                    System.out.println(print);
+                    break;
+                }
+                case ("help") : {
+                    String print = "help\n"
+                            + "Выводит в консоль все доступные"
+                            + " комманды и информацию к ним\n"
+                            + "help [command]\n"
+                            + "Выводит в консоль информацию по указанной команде\n";
+                    System.out.println(print);
+                    break;
+                }
+                case ("exit") : {
+                    String print = "exit\n"
+                            + "Завершение работы программы\n";
+
+                    System.out.println(print);
+                    break;
+                }
+                default: {
+                    System.out.println("unknown command \n"
+                            + "Если написать в консоль любой текст, "
+                            + "который не является командой, и нажать enter, \n"
+                            + "должно появиться сообщение с"
+                            + " предложением сохранить текст\n");
+                    break;
+                }
+            }
+        }
+    }
+
+    private void executeCommand(String command) {
         String[] commandSplit = command.split(" ");
         switch (commandSplit[0]) {
             case ("help") : {
-                if (commandSplit.length == 1) {
-                    System.out.println("COMMAND LIST");
-                    System.out.println("create [path] [file-name]");
-                    System.out.println("read [path] [file-name]");
-                    System.out.println("info [path] [file-name]");
-                    System.out.println("help");
-                    System.out.println("help [command]");
-                    System.out.println("exit");
-                    break;
-                } else {
-                    switch (commandSplit[1]) {
-                        case ("create") : {
-                            String print = "create [path] [file-name] \n"
-                                    + "Создает текстовый файл по указанному пути. \n"
-                                    + "Если путь не существует, вывести "
-                                    + "соответствующее сообщение. \n"
-                                    + "Если файл уже существует, "
-                                    + "вывести запрос на его перезапись\n";
-                            System.out.println(print);
-                            break;
-                        }
-                        case ("read") : {
-                            String print = "read [path] [file-name]\n"
-                                    + "Считывает файл по указанному пути и "
-                                    + "выводит текст в консоль. \n"
-                                    + "Если указанного пути и/или файла не существует, "
-                                    + "вывести соответствующее сообщение\n";
-                            System.out.println(print);
-                            break;
-                        }
-                        case ("info") : {
-                            String print = "info [path] [file-name]\n"
-                                    + "Выводит краткую информацию по указанному файлу: \n"
-                                    + "количество символов, строк, слов, дату и"
-                                    + "время последнего изменения, размер файла\n";
-                            System.out.println(print);
-                            break;
-                        }
-                        case ("help") : {
-                            String print = "help\n"
-                                    + "Выводит в консоль все доступные"
-                                    + " комманды и информацию к ним\n"
-                                    + "help [command]\n"
-                                    + "Выводит в консоль информацию по указанной команде\n";
-                            System.out.println(print);
-                            break;
-                        }
-                        case ("exit") : {
-                            String print = "exit\n"
-                                    + "Завершение работы программы\n";
-
-                            System.out.println(print);
-                            break;
-                        }
-                        default: {
-                            System.out.println("unknown command \n"
-                                    + "Если написать в консоль любой текст, "
-                                    + "который не является командой, и нажать enter, \n"
-                                    + "должно появиться сообщение с"
-                                    + " предложением сохранить текст\n");
-                            break;
-                        }
-
-                    }
-                }
+                help(commandSplit);
                 break;
             }
             case ("exit") : {
@@ -107,7 +109,7 @@ public class Program {
                 if (commandSplit.length == 3) {
                     create(commandSplit[1], commandSplit[2]);
                 } else {
-                    System.out.println("Created nothing.");
+                    System.out.println("Wrong path.");
                 }
                 break;
             }
@@ -143,7 +145,7 @@ public class Program {
         }
     }
 
-    private static void info(String path, String name) {
+    private  void info(String path, String name) {
         String fileName = path + name;
         List<String> lines;
         try {
@@ -165,7 +167,7 @@ public class Program {
         }
     }
 
-    private static void read(String path, String name) {
+    private void read(String path, String name) {
         String fileName = path + name;
         List<String> lines;
         try {
@@ -178,7 +180,7 @@ public class Program {
         }
     }
 
-    private static void create(String path, String name) {
+    private void create(String path, String name) {
 
         System.out.print("your path exist ? - ");
         System.out.println(Files.exists(Paths.get(path)));
@@ -199,12 +201,12 @@ public class Program {
                 }
 
             } catch (IOException e) {
-                System.out.println(e.toString());
+                System.out.println("something was wrong");
             }
         }
     }
 
-    private static void create(String command) {
+    private void create(String command) {
         System.out.println("where you want to save your data?\n"
                 + "write \"PATH\" + \" \" + \"FILE.EXTENSION\"");
         String[] pathAndName = readFromConsole().split(" ");
@@ -220,7 +222,7 @@ public class Program {
 
     }
 
-    private static boolean write(String path, String name, String data) {
+    private boolean write(String path, String name, String data) {
         try {
             StringBuilder stringBuilder = new StringBuilder();
             List<String> lists = Files.readAllLines(Paths.get(path + name));
@@ -245,7 +247,7 @@ public class Program {
         String command = "";
         while (!command.equals("exit")) {
             command = readFromConsole();
-            findCommand(command);
+            executeCommand(command);
         }
     }
 }
