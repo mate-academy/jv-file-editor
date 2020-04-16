@@ -23,7 +23,7 @@ public class SimpleFileManager {
         return "";
     }
 
-    private void help(String[] commandSplit){
+    private void help(String[] commandSplit) {
         if (commandSplit.length == 1) {
             System.out.println("COMMAND LIST");
             System.out.println("create [path] [file-name]");
@@ -35,8 +35,7 @@ public class SimpleFileManager {
         } else {
             switch (commandSplit[1]) {
                 case ("create") : {
-                    String print = "create [path] [file-name] \n"
-                            + "Создает текстовый файл по указанному пути. \n"
+                    String print = "Создает текстовый файл по указанному пути. \n"
                             + "Если путь не существует, вывести "
                             + "соответствующее сообщение. \n"
                             + "Если файл уже существует, "
@@ -45,8 +44,7 @@ public class SimpleFileManager {
                     break;
                 }
                 case ("read") : {
-                    String print = "read [path] [file-name]\n"
-                            + "Считывает файл по указанному пути и "
+                    String print = "Считывает файл по указанному пути и "
                             + "выводит текст в консоль. \n"
                             + "Если указанного пути и/или файла не существует, "
                             + "вывести соответствующее сообщение\n";
@@ -54,16 +52,14 @@ public class SimpleFileManager {
                     break;
                 }
                 case ("info") : {
-                    String print = "info [path] [file-name]\n"
-                            + "Выводит краткую информацию по указанному файлу: \n"
+                    String print = "Выводит краткую информацию по указанному файлу: \n"
                             + "количество символов, строк, слов, дату и"
                             + "время последнего изменения, размер файла\n";
                     System.out.println(print);
                     break;
                 }
                 case ("help") : {
-                    String print = "help\n"
-                            + "Выводит в консоль все доступные"
+                    String print = "Выводит в консоль все доступные"
                             + " комманды и информацию к ним\n"
                             + "help [command]\n"
                             + "Выводит в консоль информацию по указанной команде\n";
@@ -71,8 +67,7 @@ public class SimpleFileManager {
                     break;
                 }
                 case ("exit") : {
-                    String print = "exit\n"
-                            + "Завершение работы программы\n";
+                    String print = "Завершение работы программы\n";
 
                     System.out.println(print);
                     break;
@@ -141,7 +136,7 @@ public class SimpleFileManager {
         }
     }
 
-    private  void info(String path, String name) {
+    private void info(String path, String name) {
         String fileName = path + name;
         List<String> lines;
         try {
