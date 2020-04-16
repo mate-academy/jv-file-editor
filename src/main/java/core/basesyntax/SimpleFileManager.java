@@ -10,21 +10,17 @@ import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Feel free to remove this class and create your own.
- */
-public class Program {
+public class SimpleFileManager {
 
     private String readFromConsole() {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-        String command = "";
         System.out.println("Please, write command and press ENTER");
         try {
-            command = bufferedReader.readLine();
+            return bufferedReader.readLine();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Wrong input");
         }
-        return command;
+        return "";
     }
 
     private void help(String[] commandSplit){

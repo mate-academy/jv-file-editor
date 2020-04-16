@@ -5,7 +5,7 @@ package core.basesyntax;
  */
 public class Main {
     public static void main(String[] args) {
-        Program program = new Program();
-        program.startProgram();
+        SimpleFileManager simpleFileManager = new SimpleFileManager();
+        simpleFileManager.startProgram();
     }
 }
