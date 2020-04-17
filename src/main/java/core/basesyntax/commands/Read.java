@@ -1,11 +1,12 @@
 package core.basesyntax.commands;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Collectors;
 
 class Read extends Command {
 
@@ -21,29 +22,25 @@ class Read extends Command {
 
     @Override
     public void execute(String... args) {
-        if (args.length == 3) {
-            String path = args[1];
-            String filename = args[2];
-            File file = new File(path, filename);
-
-            if (Files.exists(Paths.get(path))) {
-                if (!file.exists()) {
-                    System.out.println("Файла с таким именем не существует.");
-                } else {
-                    try (BufferedReader br = new BufferedReader(
-                                         new FileReader(path + File.separator + filename))) {
-                        while (br.ready()) {
-                            System.out.println(br.readLine());
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            } else {
-                System.out.println("Путь не существует.");
-            }
-        } else {
+        if (args.length < 3) {
             System.out.println("Неверный аргумент(ы). Введите \"help\" для справки.");
+            return;
+        }
+
+        Path path = Paths.get(args[1] + File.separator + args[2]);
+
+        if (!Files.exists(Paths.get(args[1]))) {
+            System.out.println("Путь не существует.");
+        }
+
+        if (!Files.exists(path)) {
+            System.out.println("Файла с таким именем не существует.");
+        }
+        try {
+            List<String> lines = Files.readAllLines(path).stream().collect(Collectors.toList());
+            System.out.println(lines);
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
         }
     }
 }

@@ -1,11 +1,10 @@
 package core.basesyntax;
 
 import core.basesyntax.commands.Command;
-
 import java.util.Scanner;
 
 public class Console {
-    public static void handle(Scanner scanner){
+    public static void handle(Scanner scanner) {
         while (true) {
             if (scanner.hasNextLine()) {
                 String inputLine = scanner.nextLine();

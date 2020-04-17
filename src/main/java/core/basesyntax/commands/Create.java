@@ -22,48 +22,46 @@ class Create extends Command {
     @Override
     public void execute(String... args) {
 
-        if (args.length >= 3) {
-            String path = args[1];
-            String filename = args[2];
-            String text = String.join(" ", Arrays.asList(args).subList(3, args.length));
-            File file = new File(path, filename);
-
-            if (Files.exists(Paths.get(path))) {
-
-                String answer = "";
-                if (file.exists()) {
-                    System.out.println(
-                            "Файл с таким именем уже существует."
-                                    + " Перезаписать? (yes/no) ");
-                    answer = new Scanner(System.in).nextLine().toLowerCase();
-                }
-
-                if (!file.exists() || answer.equals("yes") || answer.equals("y")) {
-                    try {
-                        file.createNewFile();
-                        if (file.exists()) {
-                            System.out.println(
-                                    "Файл " + filename + " успешно создан.");
-                            if (!text.equals("")) {
-                                try (FileWriter writer = new FileWriter(
-                                        path + File.separator + filename)) {
-                                    writer.write(text);
-                                    System.out.println("Текст записан.");
-                                }
-                            }
-                        } else {
-                            System.out.println(
-                                    "Файл " + filename + " создать не получилось.");
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            } else {
-                System.out.println("Путь не существует.");
-            }
-        } else {
+        if (args.length < 3) {
             System.out.println("Неверный аргумент(ы). Введите \"help\" для справки.");
+            return;
+        }
+
+        String path = args[1];
+        String filename = args[2];
+        String text = String.join(" ", Arrays.asList(args).subList(3, args.length));
+        File file = new File(path, filename);
+
+        if (!Files.exists(Paths.get(path))) {
+            System.out.println("Путь не существует.");
+            return;
+        }
+
+        String answer = "";
+        if (file.exists()) {
+            System.out.println("Файл с таким именем уже существует."
+                    + " Перезаписать? (yes/no) ");
+            answer = new Scanner(System.in).nextLine().toLowerCase();
+        }
+
+        if (!file.exists() || answer.equals("yes") || answer.equals("y")) {
+            try {
+                file.createNewFile();
+                writeTextToFile(text, path + File.separator + filename);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void writeTextToFile(String text, String path) throws IOException {
+        if (text.equals("")) {
+            return;
+        }
+        try (FileWriter writer = new FileWriter(path)) {
+            writer.write(text);
+            System.out.println("Текст записан.");
         }
     }
 }
+
