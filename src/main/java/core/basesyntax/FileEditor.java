@@ -8,8 +8,8 @@ public class FileEditor {
     public void start() {
         try (Scanner scanner = new Scanner(System.in)) {
             Command command = new Command(scanner);
-            boolean bool = true;
-            while (bool) {
+            boolean isEdit = true;
+            while (isEdit) {
                 System.out.println("Write command or text: ");
                 String[] input = scanner.nextLine().split(" ");
                 String path = input.length > 1 ? input[1] : "";
@@ -34,7 +34,7 @@ public class FileEditor {
                         command.callHelp();
                         break;
                     case 6:
-                        bool = false;
+                        isEdit = false;
                         break;
                     default:
                         command.saveText(input);

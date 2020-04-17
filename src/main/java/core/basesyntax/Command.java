@@ -24,22 +24,22 @@ public class Command {
     }
 
     public void createFile(String path, String fileName) throws IOException {
-        if (Files.exists(Paths.get(path))) {
-            Path filePath = Paths.get(path + fileName);
-            if (Files.exists(filePath)) {
-                System.out.println("Do you want to rewrite this file?");
-                String answer = scanner.next();
-                if (answer.equals("Yes")) {
-                    writeToFile("",path + fileName);
-                    System.out.println("File " + fileName + " overwritten!");
-                }
-            } else {
-                Files.createFile(filePath);
-                System.out.println("File " + fileName + " created");
-            }
-        } else {
+        if (!Files.exists(Paths.get(path))) {
             System.out.println("Such path doesn't exist!");
+            return;
         }
+        Path filePath = Paths.get(path + fileName);
+        if (Files.exists(filePath)) {
+            System.out.println("Do you want to rewrite this file?");
+            String answer = scanner.next();
+            if (answer.equals("Yes")) {
+                writeToFile("", path + fileName);
+                System.out.println("File " + fileName + " overwritten!");
+            }
+            return;
+        }
+        Files.createFile(filePath);
+        System.out.println("File " + fileName + " created");
     }
 
     public void callHelp() {
@@ -118,8 +118,8 @@ public class Command {
                     System.out.println("Enter your path and filename again:");
                 }
             } while (!exists);
-            String pathToFile = String.join("",input);
-            writeToFile(String.join(" ",text), pathToFile);
+            String pathToFile = String.join("", input);
+            writeToFile(String.join(" ", text), pathToFile);
             System.out.println("Text saved in file: " + pathToFile);
         }
     }
