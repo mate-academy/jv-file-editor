@@ -2,33 +2,30 @@ package core.basesyntax;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.attribute.FileTime;
 import java.util.List;
 import java.util.Scanner;
 
 public class FileEditor {
     public void createFile(String fileName, String inputPath) {
         Path path = Paths.get(inputPath + fileName);
-        try {
-            Files.createFile(path);
-            System.out.println("Successfully creation!");
-        } catch (FileAlreadyExistsException e) {
-            System.out.println("File with name \"" + e.getLocalizedMessage() + "\" already exist.");
+        if (Files.exists(path)) {
+            try {
+                Files.createFile(path);
+                System.out.println("Successfully creation!");
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        } else {
+            System.out.println("File with name \"" + fileName + "\" already exist.");
             System.out.println("Do you want to rewrite it?");
             Scanner sc = new Scanner(System.in);
             String key = sc.next();
             if (key.equalsIgnoreCase("yes")) {
                 rewriteFile(path);
             }
-        } catch (NoSuchFileException e) {
-            System.out.println("Can not find directory: " + e.getLocalizedMessage());
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
         }
     }
 
@@ -76,46 +73,18 @@ public class FileEditor {
         Path path = Paths.get(inputPath + fileName);
         try {
             List<String> lines = takeDataFromFile(path);
-            System.out.println(countLines(lines));
-            System.out.println(countWords(lines));
-            System.out.println(countSymbols(lines));
-            System.out.println(getLastModified(path));
-            System.out.println(getFileSize(path));
+            System.out.println("Num of lines: " + lines.size());
+            System.out.println("Num of words: " + countWords(lines));
+            System.out.println("Num of symbols: " + lines.toString().length());
+            System.out.println("Last modified time: " + Files.getLastModifiedTime(path));
+            System.out.println(Files.size(path));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-    }
-
-    public String getLastModified(Path path) {
-        try {
-            FileTime fileTime = Files.getLastModifiedTime(path);
-            return fileTime.toString();
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-            return "";
-        }
-
     }
 
     public int countWords(List<String> lines) {
         String[] words = lines.toString().replaceAll("[^A-Za-zА-Яа-я ]", "").split(" ");
         return words.length;
-    }
-
-    public long getFileSize(Path path) {
-        try {
-            return Files.size(path);
-        } catch (IOException e) {
-            return 0;
-        }
-    }
-
-    public int countSymbols(List<String> lines) {
-        String symbols = lines.toString();
-        return symbols.length() - 1;
-    }
-
-    public int countLines(List<String> lines) {
-        return lines.size();
     }
 }

@@ -2,18 +2,23 @@ package core.basesyntax;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
 public class UserInterface {
-    Scanner scanner = new Scanner(System.in);
+    private Scanner scanner;
+
+    public UserInterface() {
+        scanner = new Scanner(System.in);
+    }
 
     public void userInput() {
         String inputStr;
         inputStr = scanner.nextLine();
         List<String> splitInputStr = new ArrayList<>(Arrays.asList(inputStr.split(" ")));
         FileEditor fileEditor = new FileEditor();
-        while (!splitInputStr.get(0).equals("exit")) {
+        while (true) {
             switch (splitInputStr.get(0)) {
                 case "create": {
                     fileEditor.createFile(splitInputStr.get(1), splitInputStr.size() == 3
@@ -31,26 +36,30 @@ public class UserInterface {
                     break;
                 }
                 case "help": {
+                    HashMap<String, String> help = new HashMap<>();
+                    help.put("create", "\nCommand \"create FILENAME PATH/\""
+                            + " - to create new file");
+                    help.put("read", "\nCommand \"read FILENAME PATH/\""
+                            + " - to read file content");
+                    help.put("info", "\nCommand \"info FILENAME PATH/\""
+                            + " - to get info about file");
+                    help.put("help", "\nCommand \"help COMMAND\""
+                            + " - to get info about command");
                     if (splitInputStr.size() == 1) {
-                        getHelp();
+                        System.out.println(help.values());
                     } else {
-                        getCommandHelp(splitInputStr.get(1));
+                        System.out.println(help.get(splitInputStr.get(1)) == null
+                                ? "Command does not exist" : help.get(splitInputStr.get(1)));
                     }
                     break;
                 }
+                case "exit": {
+                    System.out.println("Good bye!!!");
+                    System.exit(0);
+                }
+                break;
                 default: {
-                    System.out.println("Do you want to save this text?");
-                    String key = scanner.nextLine();
-                    if (key.equalsIgnoreCase("yes")) {
-                        final String text = splitInputStr.toString();
-                        //String tempText = text;
-                        System.out.println("Input FILENAME and PATH/");
-                        splitInputStr = Arrays.asList(scanner.nextLine().split(" "));
-                        fileEditor.createFile(splitInputStr.get(0), splitInputStr.size() == 2
-                                ? splitInputStr.get(1) : " ");
-                        fileEditor.saveText(splitInputStr.get(0), splitInputStr.size() == 2
-                                ? splitInputStr.get(1) : " ", text);
-                    }
+                    saveInputText(splitInputStr, fileEditor);
                 }
             }
             String controlStr;
@@ -60,40 +69,17 @@ public class UserInterface {
         }
     }
 
-    public void getCommandHelp(String command) {
-        switch (command) {
-            case "create":
-                System.out.println("Command \"create FILENAME PATH/\""
-                        + " - to create new file");
-                break;
-            case "read":
-                System.out.println("Command \"read FILENAME PATH/\""
-                        + " - to read file content");
-                break;
-            case "info":
-                System.out.println("Command \"info FILENAME PATH/\""
-                        + " - to get info about file");
-                break;
-            case "help":
-                System.out.println("Command \"help COMMAND\""
-                        + " - to get info about command");
-                break;
-            default:
-                System.out.println("Incorrect command. Call \"help\""
-                        + " - to view list of commands.");
+    public void saveInputText(List<String> splitInputStr, FileEditor fileEditor) {
+        System.out.println("Do you want to save this text? [yes/no]");
+        String key = scanner.nextLine();
+        if (key.equalsIgnoreCase("yes")) {
+            final String text = splitInputStr.toString();
+            System.out.println("Input FILENAME and PATH/");
+            splitInputStr = Arrays.asList(scanner.nextLine().split(" "));
+            fileEditor.createFile(splitInputStr.get(0), splitInputStr.size() == 2
+                    ? splitInputStr.get(1) : " ");
+            fileEditor.saveText(splitInputStr.get(0), splitInputStr.size() == 2
+                    ? splitInputStr.get(1) : " ", text);
         }
-    }
-
-    public void getHelp() {
-        System.out.println("Command \"create FILENAME PATH/\""
-                + " - to create new file");
-        System.out.println("Command \"read FILENAME PATH/\" -"
-                + " to read file content");
-        System.out.println("Command \"info FILENAME PATH/\" -"
-                + " to get info about file");
-        System.out.println("Command \"help \" -"
-                + " to get info about commands");
-        System.out.println("Command \"help COMMAND\" -"
-                + " to get info about command");
     }
 }
