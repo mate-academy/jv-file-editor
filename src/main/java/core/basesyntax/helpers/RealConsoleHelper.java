@@ -1,20 +1,23 @@
-package core.basesyntax;
+package core.basesyntax.helpers;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class ConsoleHelper {
+class RealConsoleHelper implements ConsoleHelper {
     private static final String YES_NO_HINT =
             "(press 'y' for \"yes\" answer, other key for no)";
     private static final String CORRECT_YES_ANSWER = "y";
-    private static ConsoleHelper instance;
 
-    public static ConsoleHelper getInstance() {
-        if (instance == null) {
-            instance = new ConsoleHelper();
-        }
-        return instance;
+    private RealConsoleHelper() {
+    }
+
+    private static class LazyInstanceHolder {
+        private static final RealConsoleHelper INSTANCE = new RealConsoleHelper();
+    }
+
+    public static RealConsoleHelper getInstance() {
+        return LazyInstanceHolder.INSTANCE;
     }
 
     public String readNotEmptyLine() {
