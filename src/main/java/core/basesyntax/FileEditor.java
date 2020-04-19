@@ -35,7 +35,7 @@ public class FileEditor {
             System.out.println("Enter a path and a name of a file you will work with: ");
             String path = scanner.next();
             String filename = scanner.next();
-            menu();
+            makeChoice();
             String choice = scanner.next();
             switch (choice) {
                 case "create" : {
@@ -55,7 +55,7 @@ public class FileEditor {
                     break;
                 }
                 case "helpCommands" : {
-                    menu();
+                    makeChoice();
                     String command = scanner.next();
                     help(command);
                     break;
@@ -73,24 +73,25 @@ public class FileEditor {
         }
     }
 
-    private static void saveInput(String path, String filename, String choice, String answer) {
+    private void saveInput(String path, String filename, String choice, String answer) {
         File file = new File(path + filename);
         if (answer.equalsIgnoreCase("yes")) {
             try (FileWriter fileWriter = new FileWriter(file)) {
                 fileWriter.write(choice);
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new RuntimeException("Can't write data into a file because "
+                        + "it does not exist", e);
             }
         }
     }
 
-    public static void menu() {
+    public void makeChoice() {
         System.out.println("Enter a command: ");
         System.out.println("create\nread\ninfo\nhelp\nhelpCommands"
                 + "(information about commands)\nexit");
     }
 
-    public static void create(String path, String name) throws IOException {
+    public void create(String path, String name) throws IOException {
         Scanner scanner = new Scanner(System.in);
         File file = new File(path + name);
         if (file.createNewFile()) {
@@ -113,7 +114,7 @@ public class FileEditor {
         }
     }
 
-    public static String read(String path, String name) {
+    public String read(String path, String name) {
         try {
             File sourceFile = new File(path + name);
             List<String> list = Files.readAllLines(sourceFile.toPath());
@@ -123,7 +124,7 @@ public class FileEditor {
         }
     }
 
-    public static void info(String path, String name) {
+    public void info(String path, String name) {
         int charCount = 0;
         int wordCount = 0;
         int lineCount = 0;
@@ -149,7 +150,7 @@ public class FileEditor {
         System.out.println("The size of file in bytes: " + file.length());
     }
 
-    public static void help() {
+    public void help() {
         System.out.println("Create ---> creates a text file at the specified path ");
         System.out.println("Read ---> reads a text file at the specified path and "
                 + "prints the content to the console");
@@ -160,7 +161,7 @@ public class FileEditor {
         System.out.println("Exit ---> exit from the program");
     }
 
-    public static void help(String command) {
+    public void help(String command) {
         System.out.println(COMMAND_INFO.get(command));
     }
 }
