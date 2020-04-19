@@ -24,17 +24,17 @@ public class FileBuilder {
                     answerExist = false;
                     break;
                 case "create":
-                    console.create(console.getPN());
+                    console.create(console.pathName());
                     answerExist = false;
                     break;
                 case "read":
-                    String[] a = console.getPN();
+                    String[] a = console.pathName();
                     console.create(a);
                     console.read(a[0], a[1]);
                     answerExist = false;
                     break;
                 case "info":
-                    console.info(console.getPN());
+                    console.info(console.pathName());
                     answerExist = false;
                     break;
                 case "exit":
@@ -55,7 +55,7 @@ public class FileBuilder {
                         while (!yorn) {
                             switch (input1.toLowerCase()) {
                                 case "yes":
-                                    console.write(console.getPN(),input);
+                                    console.write(console.pathName(),input);
                                     yorn = true;
                                     break;
                                 case ("no"):

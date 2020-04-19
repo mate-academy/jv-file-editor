@@ -10,12 +10,31 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
 public class Console {
     private static final DateTimeFormatter FORMAT =
             DateTimeFormatter.ofPattern("dd.MM.yy HH:mm:ss");
+    private static final HashMap<String,String> map = new HashMap<>();
+
+    public Console() {
+        map.put("help","Выводит в консоль все доступные комманды и информацию к ним.");
+        map.put("create","Создает текстовый файл по указанному пути.\n"
+                + "Если путь не существует, выводит соответствующее сообщение. \n"
+                + "Если файл уже существует, выводть запрос на его перезапись.");
+        map.put("read", "Считывает файл по указанному пути и выводит текст в консоль. \n"
+                + "Если указанного пути и/или файла не существует,\n"
+                + "вывести соответствующее сообщение.");
+        map.put("info", "Выводит краткую информацию по указанному файлу:"
+                + " количество символов, строк, слов, дату и время последнего"
+                + " изменения, а также размер файла.");
+        map.put("exit", "Завершение работы программы. + \\n + Инормация:\n"
+                + "Если написать в консоль любой текст, который не является командой,\n"
+                + "и нажать enter, должно появиться сообщение\n"
+                + "с предложением сохранить текст.");
+    }
 
     public void create(String[] path) {
         File file = new File(path[1]);
@@ -65,7 +84,7 @@ public class Console {
                 FileWriter file = new FileWriter(path[0] + path[1]);
                 file.write(input1);
                 file.flush();
-                System.out.println("Your text's successfully written");
+                System.out.println("Your text-->" + input1 + "<--'s successfully written");
             } catch (IOException e) {
                 throw new RuntimeException("Wrong name or Path of file...Try again...");
             }
@@ -112,38 +131,11 @@ public class Console {
     }
 
     public void help(String command) {
-        switch (command) {
-            case "help":
-                System.out.println("Выводит в консоль все доступные комманды и информацию к ним.");
-                break;
-            case "create":
-                System.out.println("Создает текстовый файл по указанному пути."
-                        + " Если путь не существует, выводит соответствующее сообщение. "
-                        + "Если файл уже существует, выводть запрос на его перезапись.");
-                break;
-            case "read":
-                System.out.println("Считывает файл по указанному пути и выводит текст в консоль. "
-                        + "Если указанного пути и/или файла не существует,"
-                        + " вывести соответствующее сообщение.");
-                break;
-            case "info":
-                System.out.println("Выводит краткую информацию по указанному файлу:"
-                        + " количество символов, строк, слов, дату и время последнего"
-                        + " изменения, а также размер файла.");
-                break;
-            case "exit":
-                System.out.println("Завершение работы программы." + "\n" + "Инормация:"
-                        + "Если написать в консоль любой текст, который не является командой,"
-                        + " и нажать enter, должно появиться сообщение"
-                        + " с предложением сохранить текст.");
-                break;
-            default:
-                System.out.println("Команда не опознана.");
-                break;
-        }
+        String answer = map.get(command);
+        System.out.println(answer == null ? "Команда не опознана." : answer);
     }
 
-    public String[] getPN() {
+    public String[] pathName() {
         Scanner scn = new Scanner(System.in);
         System.out.println("Write pls path to your file" + "\n" + "EXAMPLE:"
                 + "'src/main/java/core/basesyntax'");
