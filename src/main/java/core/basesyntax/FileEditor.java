@@ -36,59 +36,46 @@ public class FileEditor {
             System.out.println(ENTER_COMMAND);
             inputString = scanner.nextLine();
             String[] args = inputString.replaceAll("\\s+", " ").trim().split(" ");
-            if (args.length > 0) {
-                handleCommands(args);
-            }
+            handleCommands(args);
         }
     }
 
     private void handleCommands(String[] args) {
         switch (args[0]) {
             case EXIT:
-                if (args.length == 1) {
-                    System.exit(0);
-                } else {
-                    System.out.println();
-                }
+                System.exit(0);
                 break;
             case CREATE:
                 if (args.length == 3) {
                     createFile(args[1], args[2], "");
                 } else {
-                    System.out.println(String.format(WRONG_PARAMETERS_FOR_COMMAND, args[0]));
+                    printWrongParametersForCommand(args[0]);
                 }
                 break;
             case READ:
                 if (args.length == 3) {
                     readFile(args[1], args[2]);
                 } else {
-                    System.out.println(String.format(WRONG_PARAMETERS_FOR_COMMAND, args[0]));
+                    printWrongParametersForCommand(args[0]);
                 }
                 break;
             case INFO:
                 if (args.length == 3) {
                     readFileInfo(args[1], args[2]);
                 } else {
-                    System.out.println(String.format(WRONG_PARAMETERS_FOR_COMMAND, args[0]));
+                    printWrongParametersForCommand(args[0]);
                 }
                 break;
             case HELP:
-                if (args.length == 2) {
-                    try {
-                        Command cmd = Command.valueOf(args[1].toUpperCase());
-                        for (String help : cmd.getHelp()) {
-                            System.out.println(cmd.toString() + " - " + help);
-                        }
-                    } catch (IllegalArgumentException e) {
-                        System.out.println(String.format(UNKNOWN_COMMAND, args[1]));
-                    }
-                } else {
-                    for (Command cmd : Command.values()) {
-                        for (String help : cmd.getHelp()) {
-                            System.out.println(cmd.toString() + " - " + help);
-                        }
-                    }
+                Command commandForHelp = null;
+                try {
+                    commandForHelp = Command.valueOf(args[1].toUpperCase());
+                } catch (IllegalArgumentException e) {
+                    System.out.println(String.format(UNKNOWN_COMMAND, args[1]));
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    e.getMessage();
                 }
+                printHelp(commandForHelp);
                 break;
             default:
                 System.out.println(String.format(UNKNOWN_COMMAND, inputString));
@@ -98,6 +85,20 @@ public class FileEditor {
                     createFile(pathAndFileName[0], pathAndFileName[1], inputString);
                 }
         }
+    }
+
+    private void printHelp(Command command) {
+        if (command == null) {
+            for (Command cmd : Command.values()) {
+                System.out.println(cmd.toString() + " - " + cmd.getHelp());
+            }
+        } else {
+            System.out.println(command.toString() + " - " + command.getHelp());
+        }
+    }
+
+    private void printWrongParametersForCommand(String arg) {
+        System.out.println(String.format(WRONG_PARAMETERS_FOR_COMMAND, arg));
     }
 
     private String[] handleInputPathFilename() {
@@ -150,7 +151,6 @@ public class FileEditor {
                 System.out.println(line);
             }
         } catch (IOException e) {
-            e.printStackTrace();
             System.out.println(FILE_NOT_FOUND);
         }
     }
@@ -166,14 +166,16 @@ public class FileEditor {
                 Files.createDirectories(directoriesPath);
             }
             Files.createFile(fileNamePath);
+            return;
         } catch (FileAlreadyExistsException e) {
             System.out.println("unable to create file, file already exist");
-            System.out.println("do you want rewrite it (y/n)?");
-            if (!approveOperation()) {
-                return;
-            }
         } catch (IOException e) {
             System.out.println("unable to create file or directory");
+            return;
+        }
+        System.out.println("do you want rewrite it (y/n)?");
+        if (!approveOperation()) {
+            return;
         }
         writeFile(fileNamePath, content);
     }
