@@ -9,13 +9,13 @@ import java.util.regex.Pattern;
 
 public class MainAppAddition {
 
-    private static boolean finalDecision = true;
     private static final String REGEX2WORD = "^\\w{4}\\s\\[\\w{4,6}]$";
     private static final String REGEX3WORD = "^\\w{4,6}\\s\\[.+]\\s\\[.+]$";
 
     public void mainApp() {
         MainAppAddition app = new MainAppAddition();
         Scanner scanner;
+        boolean finalDecision;
         do {
             scanner = new Scanner(System.in);
             System.out.print("\nWrite your request in next format "
@@ -40,7 +40,7 @@ public class MainAppAddition {
             if (request.toLowerCase().contentEquals("exit")) {
                 finalDecision = false;
             } else {
-                app.anythingElseMethod();
+                finalDecision = app.anythingElseMethod();
             }
         } while (finalDecision);
         scanner.close();
@@ -89,15 +89,15 @@ public class MainAppAddition {
                 method.help();
                 break;
             case "exit":
-                finalDecision = false;
                 break;
             default:
                 method.saveText(request);
         }
     }
 
-    public void anythingElseMethod() {
+    public boolean anythingElseMethod() {
         boolean localDecision = true;
+        boolean finalDecision = true;
         do {
             Scanner scanner = new Scanner(System.in);
             System.out.print("\nWould you like to do anything else? (y/n): ");
@@ -111,5 +111,6 @@ public class MainAppAddition {
                 System.out.println("Wrong input, try again!");
             }
         } while (localDecision);
+        return finalDecision;
     }
 }
