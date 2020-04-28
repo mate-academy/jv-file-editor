@@ -1,5 +1,6 @@
 package core.basesyntax;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -13,7 +14,7 @@ public class UserInterface {
         scanner = new Scanner(System.in);
     }
 
-    public void userInput() {
+    public void userInput() throws IOException {
         String inputStr;
         inputStr = scanner.nextLine();
         List<String> splitInputStr = new ArrayList<>(Arrays.asList(inputStr.split(" ")));
@@ -69,7 +70,8 @@ public class UserInterface {
         }
     }
 
-    public void saveInputText(List<String> splitInputStr, FileEditor fileEditor) {
+    public void saveInputText(List<String> splitInputStr, FileEditor fileEditor)
+            throws IOException {
         System.out.println("Do you want to save this text? [yes/no]");
         String key = scanner.nextLine();
         if (key.equalsIgnoreCase("yes")) {
