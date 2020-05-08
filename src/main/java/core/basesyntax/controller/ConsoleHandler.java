@@ -1,38 +1,46 @@
-package core.basesyntax;
+package core.basesyntax.controller;
 
-import core.basesyntax.commands.Command;
+import core.basesyntax.service.ConsoleServiceImpl;
 import java.util.Scanner;
 
-public class Console {
-    public static void handle(Scanner scanner) {
+public class ConsoleHandler {
+    private Scanner scanner;
+    private ConsoleServiceImpl service;
+
+    public ConsoleHandler() {
+        scanner = new Scanner(System.in);
+        service = new ConsoleServiceImpl();
+    }
+
+    public void handle() {
         while (true) {
             if (scanner.hasNextLine()) {
                 String inputLine = scanner.nextLine();
                 String[] inputSplitData = inputLine.split(" ");
-                String command = inputSplitData[0];
+                String command = inputSplitData[0].toLowerCase();
                 switch (command) {
                     case "create": {
-                        Command.create(inputSplitData);
+                        service.create(inputSplitData);
                         break;
                     }
                     case "read": {
-                        Command.read(inputSplitData);
+                        service.read(inputSplitData);
                         break;
                     }
                     case "info": {
-                        Command.info(inputSplitData);
+                        service.info(inputSplitData);
                         break;
                     }
                     case "help": {
-                        Command.help(inputSplitData);
+                        service.help(inputSplitData);
                         break;
                     }
                     case "exit": {
-                        Command.exit(inputSplitData);
+                        service.exit();
                         break;
                     }
                     default: {
-                        Command.executeUnrecognizedInputCase(inputLine);
+                        service.execDefaultCommand(inputLine);
                         break;
                     }
                 }

@@ -1,11 +1,12 @@
 package core.basesyntax;
 
-import java.util.Scanner;
+import core.basesyntax.controller.ConsoleHandler;
 
 public class Main {
 
     public static void main(String[] args) {
-        System.out.print("$ ");
-        Console.handle(new Scanner(System.in));
+        System.out.print("Welcome to jv-file-editor. Type \"/help\" for help.\n$ ");
+        ConsoleHandler console = new ConsoleHandler();
+        console.handle();
     }
 }
