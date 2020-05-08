@@ -141,10 +141,12 @@ public class ConsoleServiceImpl implements ConsoleService {
 
         if (!Files.exists(Paths.get(args[1]))) {
             System.out.println("Путь не существует.");
+            return;
         }
 
         if (!Files.exists(path)) {
             System.out.println("Файла с таким именем не существует.");
+            return;
         }
 
         try {
@@ -181,10 +183,12 @@ public class ConsoleServiceImpl implements ConsoleService {
 
         if (!Files.exists(Paths.get(args[1]))) {
             System.out.println("Путь не существует.");
+            return;
         }
 
         if (!Files.exists(path)) {
             System.out.println("Файла с таким именем не существует.");
+            return;
         }
         try {
             Files.readAllLines(path).forEach(System.out::println);
