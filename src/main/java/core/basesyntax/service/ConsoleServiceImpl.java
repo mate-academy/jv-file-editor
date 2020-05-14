@@ -132,23 +132,11 @@ public class ConsoleServiceImpl implements ConsoleService {
 
     @Override
     public void info(String... args) {
-        if (args.length < 3) {
-            System.out.println("Неверный аргумент(ы). Введите \"help\" для справки.");
+        if (!isPathAndFileExist(args)) {
             return;
         }
 
         Path path = Paths.get(args[1] + File.separator + args[2]);
-
-        if (!Files.exists(Paths.get(args[1]))) {
-            System.out.println("Путь не существует.");
-            return;
-        }
-
-        if (!Files.exists(path)) {
-            System.out.println("Файла с таким именем не существует.");
-            return;
-        }
-
         try {
             List<String> lines = new ArrayList<>(Files.readAllLines(path));
             String format = "%26s  %-29s \n";
@@ -174,22 +162,11 @@ public class ConsoleServiceImpl implements ConsoleService {
 
     @Override
     public void read(String... args) {
-        if (args.length < 3) {
-            System.out.println("Неверный аргумент(ы). Введите \"help\" для справки.");
+        if (!isPathAndFileExist(args)) {
             return;
         }
 
         Path path = Paths.get(args[1] + File.separator + args[2]);
-
-        if (!Files.exists(Paths.get(args[1]))) {
-            System.out.println("Путь не существует.");
-            return;
-        }
-
-        if (!Files.exists(path)) {
-            System.out.println("Файла с таким именем не существует.");
-            return;
-        }
         try {
             Files.readAllLines(path).forEach(System.out::println);
         } catch (IOException e) {
@@ -205,5 +182,22 @@ public class ConsoleServiceImpl implements ConsoleService {
             writer.write(text);
             System.out.println("Текст записан.");
         }
+    }
+
+    private boolean isPathAndFileExist(String... args) {
+        if (args.length < 3) {
+            System.out.println("Неверный аргумент(ы). Введите \"help\" для справки.");
+            return false;
+        }
+        Path path = Paths.get(args[1] + File.separator + args[2]);
+        if (!Files.exists(Paths.get(args[1]))) {
+            System.out.println("Путь не существует.");
+            return false;
+        }
+        if (!Files.exists(path)) {
+            System.out.println("Файла с таким именем не существует.");
+            return false;
+        }
+        return true;
     }
 }
