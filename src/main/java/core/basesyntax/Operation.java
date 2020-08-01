@@ -5,7 +5,6 @@ public enum Operation {
     READ,
     INFO,
     HELP,
-    HELP_FOR_COMMAND,
     EXIT,
     SAVE;
 

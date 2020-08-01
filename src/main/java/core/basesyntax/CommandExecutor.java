@@ -4,10 +4,10 @@ import core.basesyntax.command.Command;
 import core.basesyntax.command.CreateCommand;
 import core.basesyntax.command.ExitCommand;
 import core.basesyntax.command.HelpCommand;
-import core.basesyntax.command.HelpForCommandCommand;
 import core.basesyntax.command.InfoCommand;
 import core.basesyntax.command.ReadCommand;
 import core.basesyntax.command.SaveCommand;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,12 +20,11 @@ public class CommandExecutor {
         allKnownCommandsMap.put(Operation.READ, new ReadCommand());
         allKnownCommandsMap.put(Operation.INFO, new InfoCommand());
         allKnownCommandsMap.put(Operation.HELP, new HelpCommand());
-        allKnownCommandsMap.put(Operation.HELP_FOR_COMMAND, new HelpForCommandCommand());
         allKnownCommandsMap.put(Operation.EXIT, new ExitCommand());
         allKnownCommandsMap.put(Operation.SAVE, new SaveCommand());
     }
 
-    public static void execute(Operation operation, String commandArgument) {
+    public static void execute(Operation operation, String commandArgument) throws IOException {
         allKnownCommandsMap.get(operation).execute(commandArgument);
     }
 }

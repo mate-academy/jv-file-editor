@@ -9,6 +9,14 @@ public class ConsoleCommunicator {
     private static final BufferedReader READER
             = new BufferedReader(new InputStreamReader(System.in));
 
+    private static final ConsoleCommunicator INSTANCE = new ConsoleCommunicator();
+
+    private ConsoleCommunicator() {
+    }
+
+    public static ConsoleCommunicator getInstance() {
+        return INSTANCE;
+    }
     public void writeMessage(String message) {
         System.out.println(message);
     }

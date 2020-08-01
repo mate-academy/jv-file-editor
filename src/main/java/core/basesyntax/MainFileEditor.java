@@ -1,33 +1,39 @@
 package core.basesyntax;
 
-import java.util.Arrays;
+import java.io.IOException;
 
 public class MainFileEditor {
 
-    public static final ConsoleCommunicator COMMUNICATOR
-            = new ConsoleCommunicator();
+    private static final ConsoleCommunicator COMMUNICATOR
+            = ConsoleCommunicator.getInstance();
 
     private static String commandArgument;
 
     public static void main(String[] args) {
-        while(true) {
-            Operation operation = askOperation();
-        }
+        Operation operation;
+        do {
+            operation = askOperation();
+            try {
+                CommandExecutor.execute(operation, commandArgument);
+            } catch (IOException | IllegalArgumentException e) {
+                COMMUNICATOR.writeMessage("File is not exist");
+            }
+        } while (operation != Operation.EXIT);
     }
 
     private static Operation askOperation() {
-        String entry;
-        do {
-            entry = COMMUNICATOR.readString();
+        while (true) {
+            String entry = COMMUNICATOR.readString();
             String[] splitEntry = entry.split(" ", 2);
             try {
-                commandArgument = splitEntry[1];
+                commandArgument = splitEntry.length == 2 ? splitEntry[1] : "";
                 return Operation.valueOf(splitEntry[0].toUpperCase());
             } catch (IllegalArgumentException e) {
-                commandArgument = "";
+                if (!entry.isEmpty()) {
+                    commandArgument = entry;
+                    return Operation.SAVE;
+                }
             }
-
-        } while (entry.isEmpty());
-        return null;
+        }
     }
 }
