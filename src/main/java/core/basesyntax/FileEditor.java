@@ -82,7 +82,8 @@ public class FileEditor {
             } else {
                 returnToBeginning();
             }
-        } else if (Files.exists(filePath)) {
+        }
+        if (Files.exists(filePath)) {
             System.out.println("File is already exists. Override file? (Y/N)");
             String answer = scanner.nextLine();
             if (answer.toLowerCase().equals("y")) {
@@ -95,6 +96,13 @@ public class FileEditor {
                 }
                 System.out.println("File successfully created!");
             }
+        } else {
+            try {
+                Files.createFile(filePath);
+            } catch (IOException e) {
+                System.out.println("Some problems with file creation");
+            }
+            System.out.println("File successfully created!");
         }
 
     }
