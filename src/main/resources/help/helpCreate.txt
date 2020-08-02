@@ -1,0 +1,6 @@
+Info about CREATE command:
+
+create [path] [file-name]
+Create file at specified directory.
+If directory is not exist you will be informed.
+If file already exist you will be proposed to rewrite it.

@@ -7,6 +7,7 @@ import core.basesyntax.command.HelpCommand;
 import core.basesyntax.command.InfoCommand;
 import core.basesyntax.command.ReadCommand;
 import core.basesyntax.command.SaveCommand;
+import core.basesyntax.exception.DirectoryNotExistException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +25,8 @@ public class CommandExecutor {
         allKnownCommandsMap.put(Operation.SAVE, new SaveCommand());
     }
 
-    public static void execute(Operation operation, String commandArgument) throws IOException {
+    public static void execute(Operation operation, String commandArgument)
+            throws IOException, DirectoryNotExistException {
         allKnownCommandsMap.get(operation).execute(commandArgument);
     }
 }

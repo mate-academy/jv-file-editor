@@ -1,6 +1,8 @@
 package core.basesyntax;
 
+import core.basesyntax.exception.DirectoryNotExistException;
 import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 
 public class MainFileEditor {
 
@@ -10,13 +12,19 @@ public class MainFileEditor {
     private static String commandArgument;
 
     public static void main(String[] args) {
+        COMMUNICATOR.writeMessage(" ===== Welcome to File Editor! =====");
+        COMMUNICATOR.writeMessage("Enter [command] or \"help\" to see options:");
         Operation operation;
         do {
             operation = askOperation();
             try {
                 CommandExecutor.execute(operation, commandArgument);
-            } catch (IOException | IllegalArgumentException e) {
-                COMMUNICATOR.writeMessage("File is not exist");
+            } catch (NoSuchFileException e) {
+                COMMUNICATOR.writeMessage("Specified file is not exist");
+            } catch (DirectoryNotExistException e) {
+                COMMUNICATOR.writeMessage("Specified directory is not exist");
+            } catch (IOException e) {
+                COMMUNICATOR.writeMessage("Operation can not be executed");
             }
         } while (operation != Operation.EXIT);
     }

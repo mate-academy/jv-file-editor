@@ -1,0 +1,5 @@
+Info about READ command:
+
+read [path] [file-name]
+Read specified file and print it content to console.
+If directory/file is not exist you will be informed.

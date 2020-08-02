@@ -3,6 +3,7 @@ package core.basesyntax;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 
 public class ConsoleCommunicator {
 
@@ -17,6 +18,7 @@ public class ConsoleCommunicator {
     public static ConsoleCommunicator getInstance() {
         return INSTANCE;
     }
+
     public void writeMessage(String message) {
         System.out.println(message);
     }
@@ -33,10 +35,7 @@ public class ConsoleCommunicator {
         return entry;
     }
 
-    public boolean confirmAction(String message) {
-        writeMessage("You are going to:");
-        writeMessage(message);
-        writeMessage("");
+    public boolean confirmAction() {
         do {
             writeMessage("Enter \"y\" for \"yes\" or \"n\" for \"no\"");
             String entry = readString();
@@ -47,5 +46,9 @@ public class ConsoleCommunicator {
                 return false;
             }
         } while (true);
+    }
+
+    public void printList(List<String> lines) {
+        lines.forEach(this::writeMessage);
     }
 }

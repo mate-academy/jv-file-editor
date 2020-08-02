@@ -1,0 +1,20 @@
+            ========== File-editor v. 1.0 ==========
+
+Available commands:
+
+create [path] [file-name]
+Create file at specified directory.
+
+read [path] [file-name]
+Read specified file and print it content to console.
+
+info [path] [file-name]
+Print info about file to console.
+
+help [command]
+Print detailed info about specified command.
+
+exit
+Exit from program.
+
+If you wright any text that is not a command, you will be proposed to save it to file.

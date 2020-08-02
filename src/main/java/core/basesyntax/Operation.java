@@ -8,7 +8,6 @@ public enum Operation {
     EXIT,
     SAVE;
 
-
     @Override
     public String toString() {
         return super.toString();

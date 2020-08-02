@@ -1,14 +1,13 @@
 package core.basesyntax.command;
 
 import core.basesyntax.FileManager;
+import core.basesyntax.exception.DirectoryNotExistException;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 public class ReadCommand implements Command {
     @Override
-    public void execute(String argument) throws IOException {
+    public void execute(String argument) throws IOException, DirectoryNotExistException {
         FileManager manager = new FileManager(getPath(argument));
-        manager.readFile().forEach(COMMUNICATOR::writeMessage);
+        COMMUNICATOR.printList(manager.readFile());
     }
 }
