@@ -95,6 +95,8 @@ public class FileEditor {
                     returnToBeginning();
                 }
                 System.out.println("File successfully created!");
+            } else {
+                returnToBeginning();
             }
         } else {
             try {
