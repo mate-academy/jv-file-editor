@@ -177,6 +177,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {
             chooseCommand(scanner.nextLine());
+
         }
     }
 }
