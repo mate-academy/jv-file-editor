@@ -99,6 +99,7 @@ public class FileEditor {
         } else {
             try {
                 Files.createFile(filePath);
+                returnToBeginning();
             } catch (IOException e) {
                 System.out.println("Some problems with file creation");
             }
