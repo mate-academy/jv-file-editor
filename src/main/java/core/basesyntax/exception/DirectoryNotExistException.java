@@ -1,4 +1,4 @@
 package core.basesyntax.exception;
 
-public class DirectoryNotExistException extends Exception {
+public class DirectoryNotExistException extends RuntimeException {
 }

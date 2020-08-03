@@ -1,8 +1,8 @@
 package core.basesyntax;
 
 import core.basesyntax.exception.DirectoryNotExistException;
+import core.basesyntax.exception.FileNotExistException;
 import java.io.IOException;
-import java.nio.file.NoSuchFileException;
 
 public class MainFileEditor {
 
@@ -19,7 +19,7 @@ public class MainFileEditor {
             operation = askOperation();
             try {
                 CommandExecutor.execute(operation, commandArgument);
-            } catch (NoSuchFileException e) {
+            } catch (FileNotExistException e) {
                 COMMUNICATOR.writeMessage("Specified file is not exist");
             } catch (DirectoryNotExistException e) {
                 COMMUNICATOR.writeMessage("Specified directory is not exist");

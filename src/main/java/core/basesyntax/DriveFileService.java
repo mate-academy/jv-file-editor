@@ -7,23 +7,26 @@ import java.nio.file.attribute.FileTime;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-public class FileManager {
+public class DriveFileService implements FileService {
 
-    private Path file;
+    private final Path file;
 
-    public FileManager(Path file) {
+    public DriveFileService(Path file) {
         this.file = file;
     }
 
+    @Override
     public void createFile() throws IOException {
         Files.deleteIfExists(file);
         Files.createFile(file);
     }
 
+    @Override
     public List<String> readFile() throws IOException {
         return Files.readAllLines(file);
     }
 
+    @Override
     public String getFileInfo() throws IOException {
         FileInfo fileInfo = new FileInfo();
         List<String> lines = readFile();
@@ -40,6 +43,7 @@ public class FileManager {
         return fileInfo.toString();
     }
 
+    @Override
     public void saveFile(String content) throws IOException {
         Files.writeString(file, content);
     }

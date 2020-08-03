@@ -1,6 +1,7 @@
 package core.basesyntax.command;
 
-import core.basesyntax.FileManager;
+import core.basesyntax.DriveFileService;
+import core.basesyntax.FileService;
 import core.basesyntax.Operation;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -14,24 +15,24 @@ public class HelpCommand implements Command {
     @Override
     public void execute(String argument) throws IOException {
         if (argument.isEmpty()) {
-            FileManager fileManager = new FileManager(HELP);
-            COMMUNICATOR.printList(fileManager.readFile());
+            FileService fileService = new DriveFileService(HELP);
+            COMMUNICATOR.printList(fileService.readFile());
             return;
         }
         try {
             Operation operation = Operation.valueOf(argument.toUpperCase());
             switch (operation) {
                 case CREATE:
-                    FileManager fileManager = new FileManager(HELP_CREATE);
-                    COMMUNICATOR.printList(fileManager.readFile());
+                    FileService fileService = new DriveFileService(HELP_CREATE);
+                    COMMUNICATOR.printList(fileService.readFile());
                     break;
                 case INFO:
-                    fileManager = new FileManager(HELP_INFO);
-                    COMMUNICATOR.printList(fileManager.readFile());
+                    fileService = new DriveFileService(HELP_INFO);
+                    COMMUNICATOR.printList(fileService.readFile());
                     break;
                 case READ:
-                    fileManager = new FileManager(HELP_READ);
-                    COMMUNICATOR.printList(fileManager.readFile());
+                    fileService = new DriveFileService(HELP_READ);
+                    COMMUNICATOR.printList(fileService.readFile());
                     break;
                 default:
                     break;
