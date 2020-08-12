@@ -1,6 +1,11 @@
 package core.basesyntax;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Scanner;
 
 public class FileEditor {
@@ -8,22 +13,33 @@ public class FileEditor {
     private boolean work = true;
 
     public void start() {
-        System.out.println("Hello! Please enter the command.\n"
-                + "You can get list of available commands by entering 'help'.\n");
+        infoMessage();
         while (work) {
             String[] variant = scanner.nextLine().split(" ");
-            if (variant.length > 3) {
-                System.out.println("Please enter valid command with correct amount parameters.\n"
-                        + "You can get list of available commands by entering 'help'.\n");
+            if (variant.length > 3 || variant.length < 1) {
+                infoMessage();
             } else {
                 switch (variant[0].toLowerCase()) {
                     case "create":
-                        //create(variant[1], variant[2]);
+                        if (variant.length == 3) {
+                            create(variant[1], variant[2]);
+                        } else {
+                            infoMessage();
+                        }
                         break;
                     case "read":
-                        //read(variant[1], variant[2]);
+                        if (variant.length == 3) {
+                            read(variant[1], variant[2]);
+                        } else {
+                            infoMessage();
+                        }
+                        break;
                     case "info":
-                        //info(variant[1], variant[2]);
+                        if (variant.length == 3) {
+                            info(variant[1], variant[2]);
+                        } else {
+                            infoMessage();
+                        }
                         break;
                     case "help":
                         if (variant.length == 2) {
@@ -43,16 +59,58 @@ public class FileEditor {
         }
     }
 
-    private void create(Path path, String filename) {
-
+    private void infoMessage() {
+        System.out.println("Please enter valid command with correct amount parameters.\n"
+                + "You can get list of available commands by entering 'help'.\n");
     }
 
-    private void read(Path path, String filename) {
-
+    private void create(String path, String filename) {
+        try {
+            Path newFilePath = Paths.get(path + FileSystems.getDefault().getSeparator() + filename);
+            Files.createFile(newFilePath);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
-    private void info(Path path, String filename) {
+    private void read(String path, String filename) {
+        Path filePath = Paths.get(path + FileSystems.getDefault().getSeparator() + filename);
+        try (BufferedReader reader = Files.newBufferedReader(filePath)) {
+            String currentLine = null;
+            while ((currentLine = reader.readLine()) != null) {
+                System.out.println(currentLine);
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
+    private void info(String path, String filename) {
+        int charNumber = 0;
+        int linesNumber = 0;
+        int wordsNumber = 0;
+        try {
+            Path filePath = Paths.get(path + FileSystems.getDefault().getSeparator() + filename);
+            try (BufferedReader reader = Files.newBufferedReader(filePath)) {
+                String currentLine = null;
+                while ((currentLine = reader.readLine()) != null) {
+                    charNumber += currentLine.length();
+                    wordsNumber += currentLine.split(" ").length;
+                    linesNumber++;
+                }
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+            System.out.println("File " + filePath + " has following parameters:\n"
+                    + "Amount of characters: " + charNumber
+                    + "\nNumber of words: " + wordsNumber
+                    + "\nNumber of lines: " + linesNumber
+                    + "\nSize: " + Files.getAttribute(filePath,"size").toString() + " bytes\n"
+                    + "Last modification time: "
+                    + Files.getAttribute(filePath, "lastModifiedTime").toString());
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private void help() {
@@ -112,7 +170,11 @@ public class FileEditor {
             case "y":
                 System.out.println("Please enter path to file and filename separated with space");
                 String[] input = scanner.nextLine().split(" ");
-                //create(input[0], input[1]);
+                if (input.length == 2) {
+                    create(input[0], input[1]);
+                } else {
+                    System.out.println("Please enter path to file and its name");
+                }
                 break;
             case "n":
                 System.out.println("Ok.");
