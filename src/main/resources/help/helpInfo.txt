@@ -1,0 +1,10 @@
+Info about INFO command:
+
+info [path] [file-name]
+Print info about file to console. You will be informed about:
+    - number of characters if the file
+    - number of lines if the file
+    - number of words if the file
+    - last modification time of the file
+    - size of the file
+If directory/file is not exist you will be informed.
