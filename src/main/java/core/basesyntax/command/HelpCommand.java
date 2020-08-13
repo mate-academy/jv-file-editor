@@ -4,19 +4,18 @@ import core.basesyntax.DriveFileService;
 import core.basesyntax.FileService;
 import core.basesyntax.Operation;
 import java.io.IOException;
-import java.nio.file.Path;
 
 public class HelpCommand implements Command {
-    private static final Path HELP = Path.of("src/main/resources/help/help.txt");
-    private static final Path HELP_CREATE = Path.of("src/main/resources/help/helpCreate.txt");
-    private static final Path HELP_INFO = Path.of("src/main/resources/help/helpInfo.txt");
-    private static final Path HELP_READ = Path.of("src/main/resources/help/helpRead.txt");
+    private static final String HELP = "src/main/resources/help/help.txt";
+    private static final String HELP_CREATE = "src/main/resources/help/helpCreate.txt";
+    private static final String HELP_INFO = "src/main/resources/help/helpInfo.txt";
+    private static final String HELP_READ = "src/main/resources/help/helpRead.txt";
 
     @Override
     public void execute(String argument) throws IOException {
         if (argument.isEmpty()) {
             FileService fileService = new DriveFileService(HELP);
-            COMMUNICATOR.printList(fileService.readFile());
+            communicator.printList(fileService.readFile());
             return;
         }
         try {
@@ -24,21 +23,21 @@ public class HelpCommand implements Command {
             switch (operation) {
                 case CREATE:
                     FileService fileService = new DriveFileService(HELP_CREATE);
-                    COMMUNICATOR.printList(fileService.readFile());
+                    communicator.printList(fileService.readFile());
                     break;
                 case INFO:
                     fileService = new DriveFileService(HELP_INFO);
-                    COMMUNICATOR.printList(fileService.readFile());
+                    communicator.printList(fileService.readFile());
                     break;
                 case READ:
                     fileService = new DriveFileService(HELP_READ);
-                    COMMUNICATOR.printList(fileService.readFile());
+                    communicator.printList(fileService.readFile());
                     break;
                 default:
                     break;
             }
         } catch (IllegalArgumentException e) {
-            COMMUNICATOR.writeMessage("No such command exist. "
+            communicator.writeMessage("No such command exist. "
                                       + "Print [help] to see available commands.");
         }
     }

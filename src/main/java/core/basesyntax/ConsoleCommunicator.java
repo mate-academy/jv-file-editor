@@ -7,16 +7,16 @@ import java.util.List;
 
 public class ConsoleCommunicator {
 
-    private static final BufferedReader READER
+    private static final BufferedReader reader
             = new BufferedReader(new InputStreamReader(System.in));
 
-    private static final ConsoleCommunicator INSTANCE = new ConsoleCommunicator();
+    private static final ConsoleCommunicator instance = new ConsoleCommunicator();
 
     private ConsoleCommunicator() {
     }
 
     public static ConsoleCommunicator getInstance() {
-        return INSTANCE;
+        return instance;
     }
 
     public void writeMessage(String message) {
@@ -27,7 +27,7 @@ public class ConsoleCommunicator {
         String entry = null;
         while (entry == null) {
             try {
-                entry = READER.readLine();
+                entry = reader.readLine();
             } catch (IOException e) {
                 writeMessage("Repeat your entry:");
             }

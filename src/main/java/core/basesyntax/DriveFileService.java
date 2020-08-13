@@ -1,5 +1,7 @@
 package core.basesyntax;
 
+import core.basesyntax.exception.DirectoryNotExistException;
+import core.basesyntax.exception.FileNotExistException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,8 +13,13 @@ public class DriveFileService implements FileService {
 
     private final Path file;
 
-    public DriveFileService(Path file) {
-        this.file = file;
+    public DriveFileService(String argument) {
+        this.file = getPath(argument);
+    }
+
+    @Override
+    public Path getFile() {
+        return file;
     }
 
     @Override
@@ -46,6 +53,18 @@ public class DriveFileService implements FileService {
     @Override
     public void saveFile(String content) throws IOException {
         Files.writeString(file, content);
+    }
+
+    private Path getPath(String argument) {
+        int lastWhitespaceIndex = argument.lastIndexOf(" ");
+        if (lastWhitespaceIndex > 0) {
+            Path directory = Path.of(argument.substring(0, lastWhitespaceIndex));
+            if (!Files.isDirectory(directory)) {
+                throw new DirectoryNotExistException();
+            }
+            return directory.resolve(argument.substring(lastWhitespaceIndex + 1));
+        }
+        throw new FileNotExistException();
     }
 
     private static class FileInfo {
