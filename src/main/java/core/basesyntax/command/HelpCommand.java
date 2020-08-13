@@ -4,12 +4,13 @@ import core.basesyntax.DriveFileService;
 import core.basesyntax.FileService;
 import core.basesyntax.Operation;
 import java.io.IOException;
+import java.nio.file.Path;
 
 public class HelpCommand implements Command {
-    private static final String HELP = "src/main/resources/help/help.txt";
-    private static final String HELP_CREATE = "src/main/resources/help/helpCreate.txt";
-    private static final String HELP_INFO = "src/main/resources/help/helpInfo.txt";
-    private static final String HELP_READ = "src/main/resources/help/helpRead.txt";
+    private static final Path HELP = Path.of("src/main/resources/help/help.txt");
+    private static final Path HELP_CREATE = Path.of("src/main/resources/help/helpCreate.txt");
+    private static final Path HELP_INFO = Path.of("src/main/resources/help/helpInfo.txt");
+    private static final Path HELP_READ = Path.of("src/main/resources/help/helpRead.txt");
 
     @Override
     public void execute(String argument) throws IOException {

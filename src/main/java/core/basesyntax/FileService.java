@@ -5,6 +5,8 @@ import java.nio.file.Path;
 import java.util.List;
 
 public interface FileService {
+    Path getFile();
+
     void createFile() throws IOException;
 
     List<String> readFile() throws IOException;
@@ -12,6 +14,4 @@ public interface FileService {
     String getFileInfo() throws IOException;
 
     void saveFile(String content) throws IOException;
-
-    Path getFile();
 }

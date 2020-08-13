@@ -17,6 +17,10 @@ public class DriveFileService implements FileService {
         this.file = getPath(argument);
     }
 
+    public DriveFileService(Path file) {
+        this.file = file;
+    }
+
     @Override
     public Path getFile() {
         return file;
