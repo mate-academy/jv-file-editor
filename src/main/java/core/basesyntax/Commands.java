@@ -1,16 +1,23 @@
 package core.basesyntax;
 
-import java.io.File;
 import java.util.Scanner;
 
-public class Commands implements Utilities {
-
+public class Commands {
+    public static final String GREETING = "Доброго времени суток!" + "\n"
+            + "Вы используете приложение для работы с файлами."
+            + "\n" + "Доступные команды:" + "\n" + "/create [path] [file-name] "
+            + "- создать файл по указанному пути." + "\n" + "\n" + "/read [path] [file-name] -"
+            + " считать текст из файла и вывести его в консоль"
+            + "\n" + "\n" + "/info [path] [file-name] - получить краткую информацию о файле"
+            + "\n" + "\n" + "/help [command] - вывести информацию о команде"
+            + "\n" + "\n" + "/exit - завершит работу программы"
+            + "\n" + "\n" + "/help - повторно вывести на экран это сообщение"
+            + "\n" + "\n" + "Хорошей работы!";
     private String command;
-
     private Scanner scanner;
 
     public void appStart() {
-        greeting();
+        System.out.println(GREETING);
         scanner = new Scanner(System.in);
         appListening();
     }
@@ -19,57 +26,20 @@ public class Commands implements Utilities {
         command = scanner.nextLine();
         try {
             commandManager();
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println("Команда требует иное количество аргументов");
-            appListening();
         } catch (RuntimeException e) {
-            System.out.println("Веденная информация неверна!");
+            System.out.println(e.getMessage());
+            appListening();
         }
     }
 
     public void commandManager() {
-        if (!command.contains("/")) {
-            appendTextToFile(command);
-            appListening();
-        } else {
-            String[] commandData = command.split(" ");
-            switch (commandData[0]) {
-                case "/create":
-                    create(commandData[1], commandData[2]);
-                    appListening();
-                    break;
-                case "/read":
-                    read(commandData[1], commandData[2]);
-                    appListening();
-                    break;
-                case "/info":
-                    information(commandData[1], commandData[2]);
-                    appListening();
-                    break;
-                case "/help":
-                    if (commandData.length == 2) {
-                        commandsHelp(commandData[1]);
-                    } else {
-                        help();
-                    }
-                    appListening();
-                    break;
-                case "/exit":
-                    System.exit(0);
-                    break;
-                case "/ДА":
-                    System.out.println("Файл создан");
-                    appListening();
-                    break;
-                case "/НЕТ":
-                    System.out.println("Ну нет, так нет ¯)_(ツ)_(¯");
-                    File file = new File("text.txt");
-                    file.delete();
-                    appListening();
-                    break;
-                default:
-                    break;
-            }
-        }
+        Action action = command.equals("/help") ? new Helping()
+                : (command.contains("/help") ? new CommandHelping()
+                : (command.contains("/info") ? new Information()
+                : ((command.contains("/read")) ? new Reading()
+                : (command.contains("/create") ? new Creating()
+                : (command.contains("/exit") ? new Exiting() : new DataExecuting())))));
+        action.doAction(command);
+        appListening();
     }
 }
