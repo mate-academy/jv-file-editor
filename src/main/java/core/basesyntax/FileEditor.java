@@ -2,7 +2,10 @@ package core.basesyntax;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -68,7 +71,8 @@ public class FileEditor {
         }
         try {
             Files.createFile(newFilePath);
-            return "File at " + path + FileSystems.getDefault().getSeparator() + filename + " was created\n>";
+            return "File at " + path + FileSystems.getDefault().getSeparator()
+                    + filename + " was created\n>";
         } catch (IOException e) {
             throw new IllegalArgumentException("Path does not exist");
         }
@@ -105,12 +109,15 @@ public class FileEditor {
             throw new IllegalArgumentException("File not found");
         }
         try {
-            buffer.append("File ").append(filePath).append(" has following parameters:\n")
-                    .append("Amount of characters: ").append(charNumber).append("\nNumber of words: ")
-                    .append(wordsNumber).append("\nNumber of lines: ").append(linesNumber)
-                    .append("\nSize: ").append(Files.getAttribute(filePath, "size").toString())
+            buffer.append("File ").append(filePath)
+                    .append(" has following parameters:\n")
+                    .append("Amount of characters: ").append(charNumber)
+                    .append("\nNumber of words: ").append(wordsNumber)
+                    .append("\nNumber of lines: ").append(linesNumber).append("\nSize: ")
+                    .append(Files.getAttribute(filePath, "size").toString())
                     .append(" bytes\n").append("Last modification time: ")
-                    .append(Files.getAttribute(filePath, "lastModifiedTime").toString()).append("\n");
+                    .append(Files.getAttribute(filePath, "lastModifiedTime").toString())
+                    .append("\n");
         } catch (IOException e) {
             throw new IllegalArgumentException("Cannot read attribute");
         }
@@ -152,7 +159,6 @@ public class FileEditor {
         String result = hashMap.get(command);
         return result != null ? result : "Malformed request. Please try again\n";
     }
-
 
     private void wantToSave() {
         System.out.println("Do you want to save text? [y/n]\n");
